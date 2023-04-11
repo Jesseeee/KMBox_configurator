@@ -13,9 +13,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 
 set(PROJECT_SOURCES
-        main.cpp
-        mainwindow.cpp
-        mainwindow.h
+    source/main.cpp
+	source/mainwindow.cpp
+    source/mainwindow.h
 )
 
 qt_add_executable(KMBox_configurator
