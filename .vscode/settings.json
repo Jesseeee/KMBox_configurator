@@ -1,0 +1,62 @@
+{
+	"KRAKEN": {
+		/* Target Device Settings */
+		"TARGET_IP": "10.124.16.142",
+		/* Name of the binary as copied onto the device */
+		"PROGRAM": "kraken",
+		/* Location of the binary */
+		"BUILD_BINARY_LOCATION": "${workspaceFolder}/build-debug/kraken",
+		/* Location of Yocto SDK */
+		"YOCTO_SDK": "/home/jesvan/xavier_sdk/"
+	},
+	"editor.detectIndentation": false,
+	"editor.insertSpaces": false,
+	"files.exclude": {
+		"**/.git": true,
+		"**/.svn": true,
+		"**/*.log": true,
+		"build": true,
+		"build-*": true
+	},
+	"files.watcherExclude": {
+		"**/.git": true,
+		"**/.svn": true,
+		"**/*.log": true,
+		"build": true,
+		"build-*": true
+	},
+	"search.exclude": {
+		"**/*.code-search": true,
+		"**/buildsystem": true,
+	},
+	"files.autoSave": "afterDelay",
+	"todohighlight.include": [
+		"**/*.c",
+		"**/*.h",
+		"**/*.cpp",
+		"**/*.hpp",
+	],
+	"todohighlight.keywords": [
+		"TODO",
+		"FIXME"
+	],
+	"editor.suggest.insertMode": "insert",
+	"editor.rulers": [
+		120
+	],
+	"editor.tabCompletion": "on",
+	"editor.formatOnSave": true,
+	"C_Cpp.intelliSenseCacheSize": 2560,
+	"C_Cpp.clang_format_style": "file:${workspaceFolder}/.vscode/clang-format",
+	"C_Cpp.autoAddFileAssociations": false,
+	"C_Cpp.autocompleteAddParentheses": true,
+	"C_Cpp.default.compileCommands": "${workspaceFolder}/build/compile_commands.json",
+	"doxdocgen.generic.splitCasingSmartText": false,
+	"doxdocgen.cpp.ctorText": "Class {name} constructor",
+	"doxdocgen.cpp.dtorText": "Class {name} destructor",
+	"doxdocgen.generic.paramTemplate": "@param[in] {param}",
+	"cmake.configureOnOpen": false,
+	"cmake.configureOnEdit": false,
+	"cmake.copyCompileCommands": "${workspaceFolder}/build/compile_commands.json",
+	"sonarlint.pathToCompileCommands": "${workspaceFolder}/build/compile_commands.json"
+}
