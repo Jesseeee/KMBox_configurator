@@ -14,8 +14,8 @@ find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 
 set(PROJECT_SOURCES
     source/main.cpp
-	source/mainwindow.cpp
-    source/mainwindow.h
+	source/MainWindow.cpp
+    source/MainWindow.hpp
 )
 
 qt_add_executable(KMBox_configurator

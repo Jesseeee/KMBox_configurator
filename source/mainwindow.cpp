@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "MainWindow.hpp"
 
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QFileDialog>
@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 {
 	setupMenus();
+	setupWidgets();
 	setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
 
 	setWindowTitle("KMBox configuration");
