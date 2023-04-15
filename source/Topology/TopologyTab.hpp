@@ -1,12 +1,12 @@
 /**
- * @file MainWindow.cpp
+ * @file TopologyTab.hpp
  *
- * @brief Main window for the GUI
+ * @brief The tab for the physical topology
  *
  * &copy; Copyright 2023 ScioTeq bv. All rights reserved.
  * +-------------------------------------------------------------------------------------------+
  * |                             Export Control Information                                    |
- * +--------+-------------+-------------------------------------+----------->-------------------+
+ * +--------+-------------+-------------------------------------+------------------------------+
  * | Origin |   Country   |     Jurisdiction & Control List     |     Authorization number     |
  * +--------+-------------+-------------------------------------+------------------------------+
  * |    X   |   Belgium   |                 n/a                 |              n/a             |
@@ -21,39 +21,34 @@
  * - <!--notes-->
  *
  * <H3>Author</H3>
- * - Apr 12, 2023 ; jesvan59903
+ * - Apr 15, 2023 ; jesvan59903
  */
+#ifndef TOPOLOGYTAB_HPP_
+#define TOPOLOGYTAB_HPP_
 
-#include "MainWindow.hpp"
+#include <QtWidgets/QFrame>
+#include <QtWidgets/QHBoxLayout>
 
-#include <QtWidgets/QMenuBar>
-#include <QtWidgets/QFileDialog>
-#include <QtCore/QCoreApplication>
+#include "TopologyList.hpp"
+#include "TopologyWidget.hpp"
 
-#include "Topology/TopologyTab.hpp"
-
-MainWindow::MainWindow(QWidget *parent)
-	: QMainWindow(parent)
+class TopologyTab : public QFrame
 {
-	setupMenus();
-	setupWidgets();
-	setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
+	Q_OBJECT
+public:
+	TopologyTab(QWidget *parent = nullptr);
+	virtual ~TopologyTab();
 
-	setWindowTitle("KMBox configuration");
-}
+private:
+	// Disable copy and move semantics by default
+	TopologyTab(const TopologyTab &)			= delete;
+	TopologyTab(TopologyTab &&)					= delete;
+	TopologyTab &operator=(const TopologyTab &) = delete;
+	TopologyTab &operator=(TopologyTab &&)		= delete;
 
-void MainWindow::setupMenus()
-{
-	QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
+	QHBoxLayout	   m_tabLayout;
+	TopologyList   m_topologyIconList;
+	TopologyWidget m_topologyMainWidget;
+};
 
-	QAction *exitAction = fileMenu->addAction(tr("&Exit"), qApp, &QCoreApplication::quit);
-	exitAction->setShortcuts(QKeySequence::Quit);
-}
-
-void MainWindow::setupWidgets()
-{
-	QTabWidget *tab = new QTabWidget(this);
-	tab->addTab(new TopologyTab(tab), "topology");
-
-	setCentralWidget(tab);
-}
+#endif

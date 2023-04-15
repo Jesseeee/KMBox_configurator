@@ -1,7 +1,7 @@
 /**
- * @file MainWindow.hpp
+ * @file TopologyList.hpp
  *
- * @brief Main window for the GUI
+ * @brief List widget containing the topology icons
  *
  * &copy; Copyright 2023 ScioTeq bv. All rights reserved.
  * +-------------------------------------------------------------------------------------------+
@@ -23,26 +23,34 @@
  * <H3>Author</H3>
  * - Apr 12, 2023 ; jesvan59903
  */
-#ifndef MAINWINDOW_HPP_
-#define MAINWINDOW_HPP_
+#ifndef TOPOLOGYLIST_HPP_
+#define TOPOLOGYLIST_HPP_
 
-#include <QMainWindow>
+#include <QListWidget>
 
-class MainWindow : public QMainWindow
+class TopologyList : public QListWidget
 {
 	Q_OBJECT
 public:
-	explicit MainWindow(QWidget *parent = nullptr);
-	~MainWindow() override = default;
+	explicit TopologyList(QWidget *parent = nullptr);
+	~TopologyList() override = default;
+
+	void addIcon(const QPixmap &pixmap, const QPoint &location);
+
+	static QString topologyMimeType() { return QStringLiteral("image/x-topology-icon"); }
+
+protected:
+	void dragEnterEvent(QDragEnterEvent *event) override;
+	void dragMoveEvent(QDragMoveEvent *event) override;
+	void dropEvent(QDropEvent *event) override;
+	void startDrag(Qt::DropActions supportedActions) override;
 
 private:
 	// Disable copy and move semantics by default
-	MainWindow(const MainWindow &)			  = delete;
-	MainWindow(MainWindow &&)				  = delete;
-	MainWindow &operator=(const MainWindow &) = delete;
-	MainWindow &operator=(MainWindow &&)	  = delete;
-
-	void setupMenus();
-	void setupWidgets();
+	TopologyList(const TopologyList &)			  = delete;
+	TopologyList(TopologyList &&)				  = delete;
+	TopologyList &operator=(const TopologyList &) = delete;
+	TopologyList &operator=(TopologyList &&)	  = delete;
 };
-#endif // MAINWINDOW_H
+
+#endif
