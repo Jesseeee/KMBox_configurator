@@ -39,7 +39,7 @@ target_link_libraries(KMBox_configurator PRIVATE
 
 qt_add_resources(KMBox_configurator "configurator"
     PREFIX
-        "/icons"
+        "/"
     FILES
         "icons/server.png"
 )

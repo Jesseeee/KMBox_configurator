@@ -36,8 +36,8 @@ class TopologyTab : public QFrame
 {
 	Q_OBJECT
 public:
-	TopologyTab(QWidget *parent = nullptr);
-	virtual ~TopologyTab();
+	explicit TopologyTab(QWidget *parent = nullptr);
+	~TopologyTab() override = default;
 
 private:
 	// Disable copy and move semantics by default

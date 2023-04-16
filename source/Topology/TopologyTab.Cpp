@@ -35,5 +35,3 @@ TopologyTab::TopologyTab(QWidget *parent)
 	m_tabLayout.addWidget(&m_topologyIconList);
 	m_tabLayout.addWidget(&m_topologyMainWidget);
 }
-
-TopologyTab::~TopologyTab() {}

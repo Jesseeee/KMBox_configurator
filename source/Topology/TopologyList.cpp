@@ -39,6 +39,8 @@ TopologyList::TopologyList(QWidget *parent)
 	setSpacing(10);
 	setAcceptDrops(true);
 	setDropIndicatorShown(true);
+
+	setupIcons();
 }
 
 void TopologyList::dragEnterEvent(QDragEnterEvent *event)
@@ -83,15 +85,6 @@ void TopologyList::dropEvent(QDropEvent *event)
 	}
 }
 
-void TopologyList::addIcon(const QPixmap &pixmap, const QPoint &location)
-{
-	QListWidgetItem *pieceItem = new QListWidgetItem(this);
-	pieceItem->setIcon(QIcon(pixmap));
-	pieceItem->setData(Qt::UserRole, QVariant(pixmap));
-	pieceItem->setData(Qt::UserRole + 1, location);
-	pieceItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
-}
-
 void TopologyList::startDrag(Qt::DropActions /*supportedActions*/)
 {
 	const QListWidgetItem *item = currentItem();
@@ -113,4 +106,34 @@ void TopologyList::startDrag(Qt::DropActions /*supportedActions*/)
 
 	if (drag->exec(Qt::MoveAction) == Qt::MoveAction)
 		delete takeItem(row(item));
+}
+#include <QtCore/QDirIterator>
+void TopologyList::setupIcons()
+{
+	QDirIterator it(":", QDirIterator::Subdirectories);
+	while (it.hasNext())
+	{
+		qDebug() << it.next();
+	}
+	QStringList icons;
+	icons << QStringLiteral(":/icons/server.png");
+	for (QString icon : icons)
+	{
+		QPixmap iconImage;
+		if (!iconImage.load(icon))
+		{
+			qDebug() << "Failed to load image";
+			continue;
+		}
+		addIcon(iconImage, QPoint(50, 50));
+	}
+}
+
+void TopologyList::addIcon(const QPixmap &pixmap, const QPoint &location)
+{
+	QListWidgetItem *pieceItem = new QListWidgetItem(this);
+	pieceItem->setIcon(QIcon(pixmap));
+	pieceItem->setData(Qt::UserRole, QVariant(pixmap));
+	pieceItem->setData(Qt::UserRole + 1, location);
+	pieceItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
 }

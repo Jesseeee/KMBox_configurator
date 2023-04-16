@@ -35,8 +35,6 @@ public:
 	explicit TopologyList(QWidget *parent = nullptr);
 	~TopologyList() override = default;
 
-	void addIcon(const QPixmap &pixmap, const QPoint &location);
-
 	static QString topologyMimeType() { return QStringLiteral("image/x-topology-icon"); }
 
 protected:
@@ -51,6 +49,9 @@ private:
 	TopologyList(TopologyList &&)				  = delete;
 	TopologyList &operator=(const TopologyList &) = delete;
 	TopologyList &operator=(TopologyList &&)	  = delete;
+
+	void setupIcons();
+	void addIcon(const QPixmap &pixmap, const QPoint &location);
 };
 
 #endif
