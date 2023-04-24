@@ -2,12 +2,14 @@
 
 #include <QApplication>
 
-int main(int argc, char *argv[])
+int main(int argv, char *args[])
 {
 	Q_INIT_RESOURCE(configurator);
 
-	QApplication a(argc, argv);
-	MainWindow	 w;
-	w.show();
-	return QApplication::exec();
+	QApplication app(argv, args);
+	MainWindow	 mainWindow;
+	mainWindow.setGeometry(100, 100, 800, 500);
+	mainWindow.show();
+
+	return app.exec();
 }

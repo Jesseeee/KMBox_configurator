@@ -1,48 +1,77 @@
-/**
- * @file MainWindow.hpp
- *
- * @brief Main window for the GUI
- *
- * &copy; Copyright 2023 ScioTeq bv. All rights reserved.
- * +-------------------------------------------------------------------------------------------+
- * |                             Export Control Information                                    |
- * +--------+-------------+-------------------------------------+------------------------------+
- * | Origin |   Country   |     Jurisdiction & Control List     |     Authorization number     |
- * +--------+-------------+-------------------------------------+------------------------------+
- * |    X   |   Belgium   |                 n/a                 |              n/a             |
- * |        |             +-------------------------------------+------------------------------+
- * |        |             |  Export control marking is not applicable to Belgian regulations.  |
- * +--------+-------------+--------------------------------------------------------------------+
- *
- * <H3>Purpose</H3>
- * - <!--purpose-->
- *
- * <H3>Notes</H3>
- * - <!--notes-->
- *
- * <H3>Author</H3>
- * - Apr 12, 2023 ; jesvan59903
- */
-#ifndef MAINWINDOW_HPP_
-#define MAINWINDOW_HPP_
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
+
+#include "DiagramItem.hpp"
 
 #include <QMainWindow>
 
+class DiagramScene;
+
+QT_BEGIN_NAMESPACE
+class QAction;
+class QToolBox;
+class QSpinBox;
+class QComboBox;
+class QButtonGroup;
+class QLineEdit;
+class QToolButton;
+class QAbstractButton;
+class QGraphicsView;
+QT_END_NAMESPACE
+
 class MainWindow : public QMainWindow
 {
-	Q_OBJECT
+    Q_OBJECT
+
 public:
-	explicit MainWindow(QWidget *parent = nullptr);
-	~MainWindow() override = default;
+   MainWindow();
+
+private slots:
+    void backgroundButtonGroupClicked(QAbstractButton *button);
+    void buttonGroupClicked(QAbstractButton *button);
+    void deleteItem();
+    void pointerGroupClicked();
+    void bringToFront();
+    void sendToBack();
+    void itemInserted(DiagramItem *item);
+    void sceneScaleChanged(const QString &scale);
+    void about();
 
 private:
-	// Disable copy and move semantics by default
-	MainWindow(const MainWindow &)			  = delete;
-	MainWindow(MainWindow &&)				  = delete;
-	MainWindow &operator=(const MainWindow &) = delete;
-	MainWindow &operator=(MainWindow &&)	  = delete;
+    void createToolBox();
+    void createActions();
+    void createMenus();
+    void createToolbars();
+    QWidget *createBackgroundCellWidget(const QString &text,
+                                        const QString &image);
+    QWidget *createCellWidget(const QString &text, DiagramItem::DiagramType type);
 
-	void setupMenus();
-	void setupWidgets();
+    DiagramScene *scene;
+    QGraphicsView *view;
+
+    QAction *exitAction;
+    QAction *addAction;
+    QAction *deleteAction;
+
+    QAction *toFrontAction;
+    QAction *sendBackAction;
+    QAction *aboutAction;
+
+    QMenu *fileMenu;
+    QMenu *itemMenu;
+    QMenu *aboutMenu;
+
+    QToolBar *editToolBar;
+    QToolBar *pointerToolbar;
+
+    QComboBox *sceneScaleCombo;
+
+    QToolBox *toolBox;
+    QButtonGroup *buttonGroup;
+    QButtonGroup *pointerTypeGroup;
+    QButtonGroup *backgroundButtonGroup;
+    QAction *fillAction;
+    QAction *lineAction;
 };
+
 #endif // MAINWINDOW_H
