@@ -17,34 +17,39 @@ QT_END_NAMESPACE
 
 class DiagramScene : public QGraphicsScene
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    enum Mode { InsertItem, InsertLine, MoveItem };
+	enum class Mode
+	{
+		InsertItem,
+		InsertLine,
+		MoveItem
+	};
 
-    explicit DiagramScene(QMenu *itemMenu, QObject *parent = nullptr);
+	explicit DiagramScene(QMenu *itemMenu, QObject *parent = nullptr);
 
 public slots:
-    void setMode(Mode mode);
-    void setItemType(DiagramItem::DiagramType type);
+	void setMode(Mode mode);
+	void setItemType(DiagramItem::DiagramType type);
 
 signals:
-    void itemInserted(DiagramItem *item);
+	void itemInserted(DiagramItem *item);
 
 protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+	void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 
 private:
-    bool isItemChange(int type) const;
+	bool isItemChange(int type) const;
 
-    DiagramItem::DiagramType myItemType;
-    QMenu *myItemMenu;
-    Mode myMode;
-    bool leftButtonDown;
-    QPointF startPoint;
-    QGraphicsLineItem *line;
+	DiagramItem::DiagramType m_myItemType	  = DiagramItem::DiagramType::Step;
+	QMenu					*m_myItemMenu	  = nullptr;
+	Mode					 m_myMode		  = Mode::MoveItem;
+	bool					 m_leftButtonDown = false;
+	QPointF					 m_startPoint;
+	QGraphicsLineItem		*m_line = nullptr;
 };
 
 #endif // DIAGRAMSCENE_H

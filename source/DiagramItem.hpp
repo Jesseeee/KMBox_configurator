@@ -13,33 +13,40 @@ QT_END_NAMESPACE
 
 class Arrow;
 
-//! [0]
 class DiagramItem : public QGraphicsPolygonItem
 {
 public:
-    enum { Type = UserType + 15 };
-    enum DiagramType { Step, Conditional, StartEnd, Io };
+	enum
+	{
+		Type = UserType + 15
+	};
+	enum class DiagramType
+	{
+		Step,
+		Conditional,
+		StartEnd,
+		Io
+	};
 
-    DiagramItem(DiagramType diagramType, QMenu *contextMenu, QGraphicsItem *parent = nullptr);
+	DiagramItem(DiagramType diagramType, QMenu *contextMenu, QGraphicsItem *parent = nullptr);
 
-    void removeArrow(Arrow *arrow);
-    void removeArrows();
-    DiagramType diagramType() const { return myDiagramType; }
-    QPolygonF polygon() const { return myPolygon; }
-    void addArrow(Arrow *arrow);
-    QPixmap image() const;
-    int type() const override { return Type; }
+	void		removeArrow(Arrow *arrow);
+	void		removeArrows();
+	DiagramType diagramType() const { return m_myDiagramType; }
+	QPolygonF	polygon() const { return m_myPolygon; }
+	void		addArrow(Arrow *arrow);
+	QPixmap		image() const;
+	int			type() const override { return Type; }
 
 protected:
-    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+	void	 contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
+	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
 private:
-    DiagramType myDiagramType;
-    QPolygonF myPolygon;
-    QMenu *myContextMenu;
-    QList<Arrow *> arrows;
+	DiagramType	   m_myDiagramType;
+	QPolygonF	   m_myPolygon;
+	QMenu		  *m_myContextMenu;
+	QList<Arrow *> m_arrows;
 };
-//! [0]
 
 #endif // DIAGRAMITEM_H

@@ -21,57 +21,55 @@ QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-   MainWindow();
+	MainWindow();
 
 private slots:
-    void backgroundButtonGroupClicked(QAbstractButton *button);
-    void buttonGroupClicked(QAbstractButton *button);
-    void deleteItem();
-    void pointerGroupClicked();
-    void bringToFront();
-    void sendToBack();
-    void itemInserted(DiagramItem *item);
-    void sceneScaleChanged(const QString &scale);
-    void about();
+	void buttonGroupClicked(QAbstractButton *button);
+	void deleteItem();
+	void pointerGroupClicked();
+	void bringToFront();
+	void sendToBack();
+	void itemInserted(DiagramItem *item);
+	void sceneScaleChanged(const QString &scale);
+	void about();
 
 private:
-    void createToolBox();
-    void createActions();
-    void createMenus();
-    void createToolbars();
-    QWidget *createBackgroundCellWidget(const QString &text,
-                                        const QString &image);
-    QWidget *createCellWidget(const QString &text, DiagramItem::DiagramType type);
+	void	 createToolBox();
+	void	 createActions();
+	void	 createMenus();
+	void	 createToolbars();
+	QWidget *createBackgroundCellWidget(const QString &text, const QString &image);
+	QWidget *createCellWidget(const QString &text, DiagramItem::DiagramType type);
 
-    DiagramScene *scene;
-    QGraphicsView *view;
+	DiagramScene  *scene;
+	QGraphicsView *view;
 
-    QAction *exitAction;
-    QAction *addAction;
-    QAction *deleteAction;
+	QAction *exitAction;
+	QAction *addAction;
+	QAction *deleteAction;
 
-    QAction *toFrontAction;
-    QAction *sendBackAction;
-    QAction *aboutAction;
+	QAction *toFrontAction;
+	QAction *sendBackAction;
+	QAction *aboutAction;
 
-    QMenu *fileMenu;
-    QMenu *itemMenu;
-    QMenu *aboutMenu;
+	QMenu *fileMenu;
+	QMenu *itemMenu;
+	QMenu *aboutMenu;
 
-    QToolBar *editToolBar;
-    QToolBar *pointerToolbar;
+	QToolBar *editToolBar;
+	QToolBar *pointerToolbar;
 
-    QComboBox *sceneScaleCombo;
+	QComboBox *sceneScaleCombo;
 
-    QToolBox *toolBox;
-    QButtonGroup *buttonGroup;
-    QButtonGroup *pointerTypeGroup;
-    QButtonGroup *backgroundButtonGroup;
-    QAction *fillAction;
-    QAction *lineAction;
+	QToolBox	 *toolBox;
+	QButtonGroup *buttonGroup;
+	QButtonGroup *pointerTypeGroup;
+	QButtonGroup *backgroundButtonGroup;
+	QAction		 *fillAction;
+	QAction		 *lineAction;
 };
 
 #endif // MAINWINDOW_H
