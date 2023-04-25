@@ -140,6 +140,7 @@ void MainWindow::createToolBox()
 	layout->addWidget(createCellWidget(tr("Conditional"), DiagramItem::DiagramType::Conditional), 0, 0);
 	layout->addWidget(createCellWidget(tr("Process"), DiagramItem::DiagramType::Step), 0, 1);
 	layout->addWidget(createCellWidget(tr("Input/Output"), DiagramItem::DiagramType::Io), 1, 0);
+	layout->addWidget(createCellWidget(tr("Server"), DiagramItem::DiagramType::Server), 1, 1);
 	layout->setRowStretch(3, 10);
 	layout->setColumnStretch(2, 10);
 

@@ -31,6 +31,11 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu, QGraphicsI
 			m_myPolygon << QPointF(-100, -100) << QPointF(100, -100) << QPointF(100, 100) << QPointF(-100, 100)
 						<< QPointF(-100, -100);
 			break;
+		case DiagramType::Server:
+			m_myPolygon << QPointF(0, 0) << QPointF(100, 0) << QPointF(100, 100) << QPointF(0, 100) << QPointF(0, 0);
+			m_myPixMap.load(":/images/server.png");
+			m_myPixMap = m_myPixMap.scaled(125, 125);
+			break;
 		default:
 			m_myPolygon << QPointF(-120, -80) << QPointF(-70, 80) << QPointF(120, 80) << QPointF(70, -80)
 						<< QPointF(-120, -80);
@@ -68,6 +73,11 @@ void DiagramItem::addArrow(Arrow *arrow)
 
 QPixmap DiagramItem::image() const
 {
+	if (!m_myPixMap.isNull())
+	{
+		return m_myPixMap;
+	}
+
 	QPixmap pixmap(250, 250);
 	pixmap.fill(Qt::transparent);
 	QPainter painter(&pixmap);

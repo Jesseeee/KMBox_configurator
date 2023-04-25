@@ -3,9 +3,9 @@
 
 #include <QGraphicsPixmapItem>
 #include <QList>
+#include <QPixmap>
 
 QT_BEGIN_NAMESPACE
-class QPixmap;
 class QGraphicsSceneContextMenuEvent;
 class QMenu;
 class QPolygonF;
@@ -25,7 +25,8 @@ public:
 		Step,
 		Conditional,
 		StartEnd,
-		Io
+		Io,
+		Server
 	};
 
 	DiagramItem(DiagramType diagramType, QMenu *contextMenu, QGraphicsItem *parent = nullptr);
@@ -47,6 +48,7 @@ private:
 	QPolygonF	   m_myPolygon;
 	QMenu		  *m_myContextMenu;
 	QList<Arrow *> m_arrows;
+	QPixmap		   m_myPixMap;
 };
 
 #endif // DIAGRAMITEM_H

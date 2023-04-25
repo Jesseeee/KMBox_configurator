@@ -26,6 +26,8 @@ set(PROJECT_SOURCES
 	source/Arrow.hpp
 	source/DiagramItem.cpp
 	source/DiagramItem.hpp
+	source/PixMapItem.cpp
+	source/PixMapItem.hpp
 	source/DiagramScene.cpp
 	source/DiagramScene.hpp
 )
@@ -60,6 +62,7 @@ qt_add_resources(KMBox_configurator "configurator"
 		"images/sendtoback.png"
 		"images/textpointer.png"
 		"images/underline.png"
+		"images/server.png"
 )
 
 install(TARGETS KMBox_configurator
