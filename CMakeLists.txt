@@ -26,8 +26,6 @@ set(PROJECT_SOURCES
 	source/Arrow.hpp
 	source/DiagramItem.cpp
 	source/DiagramItem.hpp
-	source/PixMapItem.cpp
-	source/PixMapItem.hpp
 	source/DiagramScene.cpp
 	source/DiagramScene.hpp
 )

@@ -137,10 +137,7 @@ void MainWindow::createToolBox()
 			this,
 			&MainWindow::buttonGroupClicked);
 	auto *layout = new QGridLayout;
-	layout->addWidget(createCellWidget(tr("Conditional"), DiagramItem::DiagramType::Conditional), 0, 0);
-	layout->addWidget(createCellWidget(tr("Process"), DiagramItem::DiagramType::Step), 0, 1);
-	layout->addWidget(createCellWidget(tr("Input/Output"), DiagramItem::DiagramType::Io), 1, 0);
-	layout->addWidget(createCellWidget(tr("Server"), DiagramItem::DiagramType::Server), 1, 1);
+	layout->addWidget(createCellWidget(tr("Server"), DiagramItem::DiagramType::Server), 0, 0);
 	layout->setRowStretch(3, 10);
 	layout->setColumnStretch(2, 10);
 
@@ -229,25 +226,6 @@ void MainWindow::createToolbars()
 	pointerToolbar->addWidget(pointerButton);
 	pointerToolbar->addWidget(linePointerButton);
 	pointerToolbar->addWidget(sceneScaleCombo);
-}
-
-QWidget *MainWindow::createBackgroundCellWidget(const QString &text, const QString &image)
-{
-	auto *button = new QToolButton;
-	button->setText(text);
-	button->setIcon(QIcon(image));
-	button->setIconSize(QSize(50, 50));
-	button->setCheckable(true);
-	backgroundButtonGroup->addButton(button);
-
-	auto *layout = new QGridLayout;
-	layout->addWidget(button, 0, 0, Qt::AlignHCenter);
-	layout->addWidget(new QLabel(text), 1, 0, Qt::AlignCenter);
-
-	auto *widget = new QWidget;
-	widget->setLayout(layout);
-
-	return widget;
 }
 
 QWidget *MainWindow::createCellWidget(const QString &text, DiagramItem::DiagramType type)

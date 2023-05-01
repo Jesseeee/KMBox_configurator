@@ -7,30 +7,13 @@
 #include <QPainter>
 
 DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu, QGraphicsItem *parent)
-	: QGraphicsPolygonItem(parent)
+	: QGraphicsPixmapItem(parent)
 	, m_myDiagramType(diagramType)
 	, m_myContextMenu(contextMenu)
 {
 	QPainterPath path;
 	switch (m_myDiagramType)
 	{
-		case DiagramType::StartEnd:
-			path.moveTo(200, 50);
-			path.arcTo(150, 0, 50, 50, 0, 90);
-			path.arcTo(50, 0, 50, 50, 90, 90);
-			path.arcTo(50, 50, 50, 50, 180, 90);
-			path.arcTo(150, 50, 50, 50, 270, 90);
-			path.lineTo(200, 25);
-			m_myPolygon = path.toFillPolygon();
-			break;
-		case DiagramType::Conditional:
-			m_myPolygon << QPointF(-100, 0) << QPointF(0, 100) << QPointF(100, 0) << QPointF(0, -100)
-						<< QPointF(-100, 0);
-			break;
-		case DiagramType::Step:
-			m_myPolygon << QPointF(-100, -100) << QPointF(100, -100) << QPointF(100, 100) << QPointF(-100, 100)
-						<< QPointF(-100, -100);
-			break;
 		case DiagramType::Server:
 			m_myPolygon << QPointF(0, 0) << QPointF(100, 0) << QPointF(100, 100) << QPointF(0, 100) << QPointF(0, 0);
 			m_myPixMap.load(":/images/server.png");
@@ -41,7 +24,8 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu, QGraphicsI
 						<< QPointF(-120, -80);
 			break;
 	}
-	setPolygon(m_myPolygon);
+	setPixmap(m_myPixMap);
+	// setPolygon(m_myPolygon);
 	setFlag(QGraphicsItem::ItemIsMovable, true);
 	setFlag(QGraphicsItem::ItemIsSelectable, true);
 	setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);

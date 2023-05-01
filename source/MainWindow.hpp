@@ -41,7 +41,6 @@ private:
 	void	 createActions();
 	void	 createMenus();
 	void	 createToolbars();
-	QWidget *createBackgroundCellWidget(const QString &text, const QString &image);
 	QWidget *createCellWidget(const QString &text, DiagramItem::DiagramType type);
 
 	DiagramScene  *scene;
@@ -68,8 +67,6 @@ private:
 	QButtonGroup *buttonGroup;
 	QButtonGroup *pointerTypeGroup;
 	QButtonGroup *backgroundButtonGroup;
-	QAction		 *fillAction;
-	QAction		 *lineAction;
 };
 
 #endif // MAINWINDOW_H

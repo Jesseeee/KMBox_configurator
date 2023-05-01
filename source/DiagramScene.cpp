@@ -30,7 +30,7 @@ void DiagramScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 	{
 		case Mode::InsertItem:
 			item = new DiagramItem(m_myItemType, m_myItemMenu);
-			item->setBrush(Qt::white);
+			// item->setBrush(Qt::white);
 			addItem(item);
 			item->setPos(mouseEvent->scenePos());
 			emit itemInserted(item);

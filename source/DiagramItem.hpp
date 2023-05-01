@@ -13,7 +13,7 @@ QT_END_NAMESPACE
 
 class Arrow;
 
-class DiagramItem : public QGraphicsPolygonItem
+class DiagramItem : public QGraphicsPixmapItem
 {
 public:
 	enum
@@ -22,10 +22,6 @@ public:
 	};
 	enum class DiagramType
 	{
-		Step,
-		Conditional,
-		StartEnd,
-		Io,
 		Server
 	};
 
