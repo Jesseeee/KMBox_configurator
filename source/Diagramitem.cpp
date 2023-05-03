@@ -19,6 +19,11 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu, QGraphicsI
 			m_myPixMap.load(":/images/server.png");
 			m_myPixMap = m_myPixMap.scaled(125, 125);
 			break;
+		case DiagramType::Display:
+			m_myPolygon << QPointF(0, 0) << QPointF(100, 0) << QPointF(100, 100) << QPointF(0, 100) << QPointF(0, 0);
+			m_myPixMap.load(":/images/display.png");
+			m_myPixMap = m_myPixMap.scaled(175, 125);
+			break;
 		default:
 			m_myPolygon << QPointF(-120, -80) << QPointF(-70, 80) << QPointF(120, 80) << QPointF(70, -80)
 						<< QPointF(-120, -80);

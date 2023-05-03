@@ -48,8 +48,7 @@ private:
 	QMenu					*m_myItemMenu	  = nullptr;
 	Mode					 m_myMode		  = Mode::MoveItem;
 	bool					 m_leftButtonDown = false;
-	QPointF					 m_startPoint;
-	QGraphicsLineItem		*m_line = nullptr;
+	QGraphicsLineItem		*m_line			  = nullptr;
 };
 
 #endif // DIAGRAMSCENE_H

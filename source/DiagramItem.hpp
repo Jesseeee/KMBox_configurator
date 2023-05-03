@@ -22,7 +22,8 @@ public:
 	};
 	enum class DiagramType
 	{
-		Server
+		Server,
+		Display
 	};
 
 	DiagramItem(DiagramType diagramType, QMenu *contextMenu, QGraphicsItem *parent = nullptr);

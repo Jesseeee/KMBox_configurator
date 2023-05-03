@@ -18,7 +18,6 @@ public:
 	int			 type() const override { return Type; }
 	QRectF		 boundingRect() const override;
 	QPainterPath shape() const override;
-	void		 setColor(const QColor &color) { m_myColor = color; }
 	DiagramItem *startItem() const { return m_myStartItem; }
 	DiagramItem *endItem() const { return m_myEndItem; }
 
@@ -31,7 +30,6 @@ private:
 	DiagramItem *m_myStartItem;
 	DiagramItem *m_myEndItem;
 	QPolygonF	 m_arrowHead;
-	QColor		 m_myColor = Qt::black;
 };
 
 #endif // ARROW_H

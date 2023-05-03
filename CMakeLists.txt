@@ -45,22 +45,13 @@ qt_add_resources(KMBox_configurator "configurator"
     PREFIX
         "/"
     FILES
-		"images/background1.png"
-		"images/background2.png"
-		"images/background3.png"
-		"images/background4.png"
-		"images/bold.png"
 		"images/bringtofront.png"
 		"images/delete.png"
-		"images/floodfill.png"
-		"images/italic.png"
-		"images/linecolor.png"
 		"images/linepointer.png"
 		"images/pointer.png"
 		"images/sendtoback.png"
-		"images/textpointer.png"
-		"images/underline.png"
 		"images/server.png"
+		"images/display.png"
 )
 
 install(TARGETS KMBox_configurator

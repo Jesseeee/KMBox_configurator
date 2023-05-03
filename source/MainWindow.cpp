@@ -138,6 +138,7 @@ void MainWindow::createToolBox()
 			&MainWindow::buttonGroupClicked);
 	auto *layout = new QGridLayout;
 	layout->addWidget(createCellWidget(tr("Server"), DiagramItem::DiagramType::Server), 0, 0);
+	layout->addWidget(createCellWidget(tr("Server"), DiagramItem::DiagramType::Display), 1, 0);
 	layout->setRowStretch(3, 10);
 	layout->setColumnStretch(2, 10);
 

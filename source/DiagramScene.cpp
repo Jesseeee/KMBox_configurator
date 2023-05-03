@@ -78,7 +78,6 @@ void DiagramScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 			DiagramItem *startItem = qgraphicsitem_cast<DiagramItem *>(startItems.first());
 			DiagramItem *endItem   = qgraphicsitem_cast<DiagramItem *>(endItems.first());
 			Arrow		*arrow	   = new Arrow(startItem, endItem);
-			arrow->setColor(Qt::black);
 			startItem->addArrow(arrow);
 			endItem->addArrow(arrow);
 			arrow->setZValue(-1000.0);

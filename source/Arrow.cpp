@@ -11,7 +11,7 @@ Arrow::Arrow(DiagramItem *startItem, DiagramItem *endItem, QGraphicsItem *parent
 	, m_myEndItem(endItem)
 {
 	setFlag(QGraphicsItem::ItemIsSelectable, true);
-	setPen(QPen(m_myColor, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+	setPen(QPen(Qt::black, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 }
 
 QRectF Arrow::boundingRect() const
@@ -42,10 +42,10 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *
 		return;
 
 	QPen myPen = pen();
-	myPen.setColor(m_myColor);
+	myPen.setColor(Qt::black);
 	qreal arrowSize = 20;
 	painter->setPen(myPen);
-	painter->setBrush(m_myColor);
+	painter->setBrush(Qt::black);
 
 	QLineF	  centerLine(m_myStartItem->pos(), m_myEndItem->pos());
 	QPolygonF endPolygon = m_myEndItem->polygon();
@@ -75,7 +75,7 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *
 	painter->drawPolygon(m_arrowHead);
 	if (isSelected())
 	{
-		painter->setPen(QPen(m_myColor, 1, Qt::DashLine));
+		painter->setPen(QPen(Qt::black, 1, Qt::DashLine));
 		QLineF myLine = line();
 		myLine.translate(0, 4.0);
 		painter->drawLine(myLine);
