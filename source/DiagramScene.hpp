@@ -27,7 +27,7 @@ public:
 		MoveItem
 	};
 
-	explicit DiagramScene(QMenu *itemMenu, QObject *parent = nullptr);
+	explicit DiagramScene(QObject *parent = nullptr);
 
 public slots:
 	void setMode(Mode mode);
@@ -45,7 +45,6 @@ private:
 	bool isItemChange(int type) const;
 
 	DiagramItem::DiagramType m_myItemType	  = DiagramItem::DiagramType::Server;
-	QMenu					*m_myItemMenu	  = nullptr;
 	Mode					 m_myMode		  = Mode::MoveItem;
 	bool					 m_leftButtonDown = false;
 	QGraphicsLineItem		*m_line			  = nullptr;

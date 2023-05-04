@@ -6,10 +6,9 @@
 #include <QMenu>
 #include <QPainter>
 
-DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu, QGraphicsItem *parent)
+DiagramItem::DiagramItem(DiagramType diagramType, QGraphicsItem *parent)
 	: QGraphicsPixmapItem(parent)
 	, m_myDiagramType(diagramType)
-	, m_myContextMenu(contextMenu)
 {
 	QPainterPath path;
 	switch (m_myDiagramType)
@@ -75,13 +74,6 @@ QPixmap DiagramItem::image() const
 	painter.drawPolyline(m_myPolygon);
 
 	return pixmap;
-}
-
-void DiagramItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
-{
-	scene()->clearSelection();
-	setSelected(true);
-	m_myContextMenu->popup(event->screenPos());
 }
 
 QVariant DiagramItem::itemChange(GraphicsItemChange change, const QVariant &value)

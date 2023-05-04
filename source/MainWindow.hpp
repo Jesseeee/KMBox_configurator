@@ -24,7 +24,7 @@ class MainWindow : public QMainWindow
 	Q_OBJECT
 
 public:
-	MainWindow();
+	MainWindow(QWidget *parent = nullptr);
 
 private slots:
 	void buttonGroupClicked(QAbstractButton *button);
@@ -34,29 +34,21 @@ private slots:
 	void sendToBack();
 	void itemInserted(DiagramItem *item);
 	void sceneScaleChanged(const QString &scale);
-	void about();
 
 private:
 	void	 createToolBox();
 	void	 createActions();
-	void	 createMenus();
 	void	 createToolbars();
 	QWidget *createCellWidget(const QString &text, DiagramItem::DiagramType type);
 
 	DiagramScene  *scene;
 	QGraphicsView *view;
 
-	QAction *exitAction;
 	QAction *addAction;
 	QAction *deleteAction;
 
 	QAction *toFrontAction;
 	QAction *sendBackAction;
-	QAction *aboutAction;
-
-	QMenu *fileMenu;
-	QMenu *itemMenu;
-	QMenu *aboutMenu;
 
 	QToolBar *editToolBar;
 	QToolBar *pointerToolbar;

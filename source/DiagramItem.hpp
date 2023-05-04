@@ -26,7 +26,7 @@ public:
 		Display
 	};
 
-	DiagramItem(DiagramType diagramType, QMenu *contextMenu, QGraphicsItem *parent = nullptr);
+	DiagramItem(DiagramType diagramType, QGraphicsItem *parent = nullptr);
 
 	void		removeArrow(Arrow *arrow);
 	void		removeArrows();
@@ -37,13 +37,11 @@ public:
 	int			type() const override { return Type; }
 
 protected:
-	void	 contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
 private:
 	DiagramType	   m_myDiagramType;
 	QPolygonF	   m_myPolygon;
-	QMenu		  *m_myContextMenu;
 	QList<Arrow *> m_arrows;
 	QPixmap		   m_myPixMap;
 };

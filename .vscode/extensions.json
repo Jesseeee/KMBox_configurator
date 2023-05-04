@@ -2,10 +2,10 @@
 	"recommendations": [
 		"jeff-hykin.better-cpp-syntax",
 		"ms-vscode.cpptools-themes",
-		"wayou.vscode-todo-highlight",
 		"ms-vscode.cpptools",
 		"ms-vscode.cpptools-extension-pack",
 		"cschlosser.doxdocgen",
-		"maptz.camelcasenavigation"
+		"maptz.camelcasenavigation",
+		"gruntfuggly.todo-tree"
 	]
 }

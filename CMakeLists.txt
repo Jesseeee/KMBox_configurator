@@ -28,6 +28,8 @@ set(PROJECT_SOURCES
 	source/DiagramItem.hpp
 	source/DiagramScene.cpp
 	source/DiagramScene.hpp
+	source/TabWindow.cpp
+	source/TabWindow.hpp
 )
 
 qt_add_executable(KMBox_configurator

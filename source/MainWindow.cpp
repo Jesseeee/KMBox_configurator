@@ -5,13 +5,13 @@
 
 #include <QtWidgets>
 
-MainWindow::MainWindow()
+MainWindow::MainWindow(QWidget *parent)
+	: QMainWindow(parent)
 {
 	createActions();
 	createToolBox();
-	createMenus();
 
-	scene = new DiagramScene(itemMenu, this);
+	scene = new DiagramScene(this);
 	scene->setSceneRect(QRectF(0, 0, 5000, 5000));
 	connect(scene, &DiagramScene::itemInserted, this, &MainWindow::itemInserted);
 	createToolbars();
@@ -25,8 +25,9 @@ MainWindow::MainWindow()
 	widget->setLayout(layout);
 
 	setCentralWidget(widget);
-	setWindowTitle(tr("KMBox configurator"));
 	setUnifiedTitleAndToolBarOnMac(true);
+
+	setGeometry(100, 100, 800, 500);
 }
 
 void MainWindow::buttonGroupClicked(QAbstractButton *button)
@@ -121,13 +122,6 @@ void MainWindow::sceneScaleChanged(const QString &scale)
 	view->scale(newScale, newScale);
 }
 
-void MainWindow::about()
-{
-	QMessageBox::about(this,
-					   tr("About KMBox Configurator"),
-					   tr("The configurator allows graphically designing a KMBox configuration"));
-}
-
 void MainWindow::createToolBox()
 {
 	buttonGroup = new QButtonGroup(this);
@@ -167,30 +161,6 @@ void MainWindow::createActions()
 	deleteAction->setShortcut(tr("Delete"));
 	deleteAction->setStatusTip(tr("Delete item from diagram"));
 	connect(deleteAction, &QAction::triggered, this, &MainWindow::deleteItem);
-
-	exitAction = new QAction(tr("E&xit"), this);
-	exitAction->setShortcuts(QKeySequence::Quit);
-	exitAction->setStatusTip(tr("Quit Scenediagram example"));
-	connect(exitAction, &QAction::triggered, this, &QWidget::close);
-
-	aboutAction = new QAction(tr("A&bout"), this);
-	aboutAction->setShortcut(tr("F1"));
-	connect(aboutAction, &QAction::triggered, this, &MainWindow::about);
-}
-
-void MainWindow::createMenus()
-{
-	fileMenu = menuBar()->addMenu(tr("&File"));
-	fileMenu->addAction(exitAction);
-
-	itemMenu = menuBar()->addMenu(tr("&Item"));
-	itemMenu->addAction(deleteAction);
-	itemMenu->addSeparator();
-	itemMenu->addAction(toFrontAction);
-	itemMenu->addAction(sendBackAction);
-
-	aboutMenu = menuBar()->addMenu(tr("&Help"));
-	aboutMenu->addAction(aboutAction);
 }
 
 void MainWindow::createToolbars()
@@ -231,7 +201,7 @@ void MainWindow::createToolbars()
 
 QWidget *MainWindow::createCellWidget(const QString &text, DiagramItem::DiagramType type)
 {
-	DiagramItem item(type, itemMenu);
+	DiagramItem item(type);
 	QIcon		icon(item.image());
 
 	auto *button = new QToolButton;
