@@ -1,5 +1,5 @@
 /**
- * @file TabWindow.hpp
+ * @file TopologyItem.hpp
  *
  * @brief TODO
  *
@@ -21,36 +21,54 @@
  * - <!--notes-->
  *
  * <H3>Author</H3>
- * - May 04, 2023 ; jesvan
+ * - May 06, 2023 ; jesvan
  */
-#ifndef TABWINDOW_HPP_
-#define TABWINDOW_HPP_
+#ifndef TOPOLOGYITEM_HPP_
+#define TOPOLOGYITEM_HPP_
 
-#include <QtWidgets/QMainWindow>
+#include <QGraphicsPixmapItem>
+#include <QList>
+#include <QPixmap>
 
-class TabWindow : public QMainWindow
+QT_BEGIN_NAMESPACE
+class QGraphicsSceneContextMenuEvent;
+class QMenu;
+class QPolygonF;
+QT_END_NAMESPACE
+
+class Arrow;
+
+class TopologyItem : public QGraphicsPixmapItem
 {
 public:
-	explicit TabWindow(QWidget *parent = nullptr);
-	~TabWindow() override;
+	enum
+	{
+		Type = UserType + 15
+	};
+	enum class TopologyType
+	{
+		Server,
+		Display
+	};
 
-	// Disable copy and move semantics by default
-	TabWindow(const TabWindow &)			= delete;
-	TabWindow(TabWindow &&)					= delete;
-	TabWindow &operator=(const TabWindow &) = delete;
-	TabWindow &operator=(TabWindow &&)		= delete;
+	TopologyItem(TopologyType diagramType, QGraphicsItem *parent = nullptr);
 
-private Q_SLOTS:
-	void about();
+	void		 removeArrow(Arrow *arrow);
+	void		 removeArrows();
+	TopologyType diagramType() const { return m_myDiagramType; }
+	QPolygonF	 polygon() const { return m_myPolygon; }
+	void		 addArrow(Arrow *arrow);
+	QPixmap		 image() const;
+	int			 type() const override { return Type; }
+
+protected:
+	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
 private:
-	QTabWidget *tabWidget;
-
-	QMenu *fileMenu;
-	QMenu *aboutMenu;
-
-	QAction *exitAction;
-	QAction *aboutAction;
+	TopologyType   m_myDiagramType;
+	QPolygonF	   m_myPolygon;
+	QList<Arrow *> m_arrows;
+	QPixmap		   m_myPixMap;
 };
 
-#endif
+#endif // DIAGRAMITEM_H

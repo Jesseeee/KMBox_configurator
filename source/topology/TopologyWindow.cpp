@@ -1,19 +1,45 @@
+/**
+ * @file TopologyWindow.cpp
+ *
+ * @brief TODO
+ *
+ * &copy; Copyright 2023 ScioTeq bv. All rights reserved.
+ * +-------------------------------------------------------------------------------------------+
+ * |                             Export Control Information                                    |
+ * +--------+-------------+-------------------------------------+----------->-------------------+
+ * | Origin |   Country   |     Jurisdiction & Control List     |     Authorization number     |
+ * +--------+-------------+-------------------------------------+------------------------------+
+ * |    X   |   Belgium   |                 n/a                 |              n/a             |
+ * |        |             +-------------------------------------+------------------------------+
+ * |        |             |  Export control marking is not applicable to Belgian regulations.  |
+ * +--------+-------------+--------------------------------------------------------------------+
+ *
+ * <H3>Purpose</H3>
+ * - <!--purpose-->
+ *
+ * <H3>Notes</H3>
+ * - <!--notes-->
+ *
+ * <H3>Author</H3>
+ * - May 06, 2023 ; jesvan
+ */
+
 #include "Arrow.hpp"
-#include "DiagramItem.hpp"
-#include "DiagramScene.hpp"
-#include "MainWindow.hpp"
+#include "TopologyItem.hpp"
+#include "TopologyScene.hpp"
+#include "TopologyWindow.hpp"
 
 #include <QtWidgets>
 
-MainWindow::MainWindow(QWidget *parent)
+TopologyWindow::TopologyWindow(QWidget *parent)
 	: QMainWindow(parent)
 {
 	createActions();
 	createToolBox();
 
-	scene = new DiagramScene(this);
+	scene = new TopologyScene(this);
 	scene->setSceneRect(QRectF(0, 0, 5000, 5000));
-	connect(scene, &DiagramScene::itemInserted, this, &MainWindow::itemInserted);
+	connect(scene, &TopologyScene::itemInserted, this, &TopologyWindow::itemInserted);
 	createToolbars();
 
 	QHBoxLayout *layout = new QHBoxLayout;
@@ -30,7 +56,7 @@ MainWindow::MainWindow(QWidget *parent)
 	setGeometry(100, 100, 800, 500);
 }
 
-void MainWindow::buttonGroupClicked(QAbstractButton *button)
+void TopologyWindow::buttonGroupClicked(QAbstractButton *button)
 {
 	for (const QAbstractButton *myButton : buttonGroup->buttons())
 	{
@@ -38,11 +64,11 @@ void MainWindow::buttonGroupClicked(QAbstractButton *button)
 			button->setChecked(false);
 	}
 	const int id = buttonGroup->id(button);
-	scene->setItemType(DiagramItem::DiagramType(id));
-	scene->setMode(DiagramScene::Mode::InsertItem);
+	scene->setItemType(TopologyItem::TopologyType(id));
+	scene->setMode(TopologyScene::Mode::InsertItem);
 }
 
-void MainWindow::deleteItem()
+void TopologyWindow::deleteItem()
 {
 	QList<QGraphicsItem *> selectedItems = scene->selectedItems();
 	for (QGraphicsItem *item : std::as_const(selectedItems))
@@ -60,19 +86,19 @@ void MainWindow::deleteItem()
 	selectedItems = scene->selectedItems();
 	for (QGraphicsItem *item : std::as_const(selectedItems))
 	{
-		if (item->type() == DiagramItem::Type)
-			qgraphicsitem_cast<DiagramItem *>(item)->removeArrows();
+		if (item->type() == TopologyItem::Type)
+			qgraphicsitem_cast<TopologyItem *>(item)->removeArrows();
 		scene->removeItem(item);
 		delete item;
 	}
 }
 
-void MainWindow::pointerGroupClicked()
+void TopologyWindow::pointerGroupClicked()
 {
-	scene->setMode(DiagramScene::Mode(pointerTypeGroup->checkedId()));
+	scene->setMode(TopologyScene::Mode(pointerTypeGroup->checkedId()));
 }
 
-void MainWindow::bringToFront()
+void TopologyWindow::bringToFront()
 {
 	if (scene->selectedItems().isEmpty())
 		return;
@@ -83,13 +109,13 @@ void MainWindow::bringToFront()
 	qreal zValue = 0;
 	for (const QGraphicsItem *item : overlapItems)
 	{
-		if (item->zValue() >= zValue && item->type() == DiagramItem::Type)
+		if (item->zValue() >= zValue && item->type() == TopologyItem::Type)
 			zValue = item->zValue() + 0.1;
 	}
 	selectedItem->setZValue(zValue);
 }
 
-void MainWindow::sendToBack()
+void TopologyWindow::sendToBack()
 {
 	if (scene->selectedItems().isEmpty())
 		return;
@@ -100,20 +126,20 @@ void MainWindow::sendToBack()
 	qreal zValue = 0;
 	for (const QGraphicsItem *item : overlapItems)
 	{
-		if (item->zValue() <= zValue && item->type() == DiagramItem::Type)
+		if (item->zValue() <= zValue && item->type() == TopologyItem::Type)
 			zValue = item->zValue() - 0.1;
 	}
 	selectedItem->setZValue(zValue);
 }
 
-void MainWindow::itemInserted(DiagramItem *item)
+void TopologyWindow::itemInserted(TopologyItem *item)
 {
-	pointerTypeGroup->button(int(DiagramScene::Mode::MoveItem))->setChecked(true);
-	scene->setMode(DiagramScene::Mode(pointerTypeGroup->checkedId()));
+	pointerTypeGroup->button(int(TopologyScene::Mode::MoveItem))->setChecked(true);
+	scene->setMode(TopologyScene::Mode(pointerTypeGroup->checkedId()));
 	buttonGroup->button(int(item->diagramType()))->setChecked(false);
 }
 
-void MainWindow::sceneScaleChanged(const QString &scale)
+void TopologyWindow::sceneScaleChanged(const QString &scale)
 {
 	double	   newScale	 = scale.left(scale.indexOf(tr("%"))).toDouble() / 100.0;
 	QTransform oldMatrix = view->transform();
@@ -122,17 +148,17 @@ void MainWindow::sceneScaleChanged(const QString &scale)
 	view->scale(newScale, newScale);
 }
 
-void MainWindow::createToolBox()
+void TopologyWindow::createToolBox()
 {
 	buttonGroup = new QButtonGroup(this);
 	buttonGroup->setExclusive(false);
 	connect(buttonGroup,
 			QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked),
 			this,
-			&MainWindow::buttonGroupClicked);
+			&TopologyWindow::buttonGroupClicked);
 	auto *layout = new QGridLayout;
-	layout->addWidget(createCellWidget(tr("Server"), DiagramItem::DiagramType::Server), 0, 0);
-	layout->addWidget(createCellWidget(tr("Server"), DiagramItem::DiagramType::Display), 1, 0);
+	layout->addWidget(createCellWidget(tr("Server"), TopologyItem::TopologyType::Server), 0, 0);
+	layout->addWidget(createCellWidget(tr("Server"), TopologyItem::TopologyType::Display), 1, 0);
 	layout->setRowStretch(3, 10);
 	layout->setColumnStretch(2, 10);
 
@@ -145,25 +171,25 @@ void MainWindow::createToolBox()
 	toolBox->addItem(itemWidget, tr("Topology icons"));
 }
 
-void MainWindow::createActions()
+void TopologyWindow::createActions()
 {
 	toFrontAction = new QAction(QIcon(":/images/bringtofront.png"), tr("Bring to &Front"), this);
 	toFrontAction->setShortcut(tr("Ctrl+F"));
 	toFrontAction->setStatusTip(tr("Bring item to front"));
-	connect(toFrontAction, &QAction::triggered, this, &MainWindow::bringToFront);
+	connect(toFrontAction, &QAction::triggered, this, &TopologyWindow::bringToFront);
 
 	sendBackAction = new QAction(QIcon(":/images/sendtoback.png"), tr("Send to &Back"), this);
 	sendBackAction->setShortcut(tr("Ctrl+T"));
 	sendBackAction->setStatusTip(tr("Send item to back"));
-	connect(sendBackAction, &QAction::triggered, this, &MainWindow::sendToBack);
+	connect(sendBackAction, &QAction::triggered, this, &TopologyWindow::sendToBack);
 
 	deleteAction = new QAction(QIcon(":/images/delete.png"), tr("&Delete"), this);
 	deleteAction->setShortcut(tr("Delete"));
 	deleteAction->setStatusTip(tr("Delete item from diagram"));
-	connect(deleteAction, &QAction::triggered, this, &MainWindow::deleteItem);
+	connect(deleteAction, &QAction::triggered, this, &TopologyWindow::deleteItem);
 }
 
-void MainWindow::createToolbars()
+void TopologyWindow::createToolbars()
 {
 	editToolBar = addToolBar(tr("Edit"));
 	editToolBar->addAction(deleteAction);
@@ -179,19 +205,19 @@ void MainWindow::createToolbars()
 	linePointerButton->setIcon(QIcon(":/images/linepointer.png"));
 
 	pointerTypeGroup = new QButtonGroup(this);
-	pointerTypeGroup->addButton(pointerButton, int(DiagramScene::Mode::MoveItem));
-	pointerTypeGroup->addButton(linePointerButton, int(DiagramScene::Mode::InsertLine));
+	pointerTypeGroup->addButton(pointerButton, int(TopologyScene::Mode::MoveItem));
+	pointerTypeGroup->addButton(linePointerButton, int(TopologyScene::Mode::InsertLine));
 	connect(pointerTypeGroup,
 			QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked),
 			this,
-			&MainWindow::pointerGroupClicked);
+			&TopologyWindow::pointerGroupClicked);
 
 	sceneScaleCombo = new QComboBox;
 	QStringList scales;
 	scales << tr("50%") << tr("75%") << tr("100%") << tr("125%") << tr("150%");
 	sceneScaleCombo->addItems(scales);
 	sceneScaleCombo->setCurrentIndex(2);
-	connect(sceneScaleCombo, &QComboBox::currentTextChanged, this, &MainWindow::sceneScaleChanged);
+	connect(sceneScaleCombo, &QComboBox::currentTextChanged, this, &TopologyWindow::sceneScaleChanged);
 
 	pointerToolbar = addToolBar(tr("Pointer type"));
 	pointerToolbar->addWidget(pointerButton);
@@ -199,10 +225,10 @@ void MainWindow::createToolbars()
 	pointerToolbar->addWidget(sceneScaleCombo);
 }
 
-QWidget *MainWindow::createCellWidget(const QString &text, DiagramItem::DiagramType type)
+QWidget *TopologyWindow::createCellWidget(const QString &text, TopologyItem::TopologyType type)
 {
-	DiagramItem item(type);
-	QIcon		icon(item.image());
+	TopologyItem item(type);
+	QIcon		 icon(item.image());
 
 	auto *button = new QToolButton;
 	button->setIcon(icon);

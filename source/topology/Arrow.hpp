@@ -1,5 +1,5 @@
 /**
- * @file TabWindow.hpp
+ * @file Arrow.hpp
  *
  * @brief TODO
  *
@@ -21,36 +21,40 @@
  * - <!--notes-->
  *
  * <H3>Author</H3>
- * - May 04, 2023 ; jesvan
+ * - May 06, 2023 ; jesvan
  */
-#ifndef TABWINDOW_HPP_
-#define TABWINDOW_HPP_
+#ifndef ARROW_HPP_
+#define ARROW_HPP_
 
-#include <QtWidgets/QMainWindow>
+#include <QGraphicsLineItem>
 
-class TabWindow : public QMainWindow
+class TopologyItem;
+
+class Arrow : public QGraphicsLineItem
 {
 public:
-	explicit TabWindow(QWidget *parent = nullptr);
-	~TabWindow() override;
+	enum
+	{
+		Type = UserType + 4
+	};
 
-	// Disable copy and move semantics by default
-	TabWindow(const TabWindow &)			= delete;
-	TabWindow(TabWindow &&)					= delete;
-	TabWindow &operator=(const TabWindow &) = delete;
-	TabWindow &operator=(TabWindow &&)		= delete;
+	Arrow(TopologyItem *startItem, TopologyItem *endItem, QGraphicsItem *parent = nullptr);
 
-private Q_SLOTS:
-	void about();
+	int			  type() const override { return Type; }
+	QRectF		  boundingRect() const override;
+	QPainterPath  shape() const override;
+	TopologyItem *startItem() const { return m_myStartItem; }
+	TopologyItem *endItem() const { return m_myEndItem; }
+
+	void updatePosition();
+
+protected:
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 
 private:
-	QTabWidget *tabWidget;
-
-	QMenu *fileMenu;
-	QMenu *aboutMenu;
-
-	QAction *exitAction;
-	QAction *aboutAction;
+	TopologyItem *m_myStartItem;
+	TopologyItem *m_myEndItem;
+	QPolygonF	  m_arrowHead;
 };
 
-#endif
+#endif // ARROW_H

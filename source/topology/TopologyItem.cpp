@@ -1,4 +1,30 @@
-#include "DiagramItem.hpp"
+/**
+ * @file TopologyItem.cpp
+ *
+ * @brief TODO
+ *
+ * &copy; Copyright 2023 ScioTeq bv. All rights reserved.
+ * +-------------------------------------------------------------------------------------------+
+ * |                             Export Control Information                                    |
+ * +--------+-------------+-------------------------------------+----------->-------------------+
+ * | Origin |   Country   |     Jurisdiction & Control List     |     Authorization number     |
+ * +--------+-------------+-------------------------------------+------------------------------+
+ * |    X   |   Belgium   |                 n/a                 |              n/a             |
+ * |        |             +-------------------------------------+------------------------------+
+ * |        |             |  Export control marking is not applicable to Belgian regulations.  |
+ * +--------+-------------+--------------------------------------------------------------------+
+ *
+ * <H3>Purpose</H3>
+ * - <!--purpose-->
+ *
+ * <H3>Notes</H3>
+ * - <!--notes-->
+ *
+ * <H3>Author</H3>
+ * - May 06, 2023 ; jesvan
+ */
+
+#include "TopologyItem.hpp"
 #include "Arrow.hpp"
 
 #include <QGraphicsScene>
@@ -6,19 +32,19 @@
 #include <QMenu>
 #include <QPainter>
 
-DiagramItem::DiagramItem(DiagramType diagramType, QGraphicsItem *parent)
+TopologyItem::TopologyItem(TopologyType diagramType, QGraphicsItem *parent)
 	: QGraphicsPixmapItem(parent)
 	, m_myDiagramType(diagramType)
 {
 	QPainterPath path;
 	switch (m_myDiagramType)
 	{
-		case DiagramType::Server:
+		case TopologyType::Server:
 			m_myPolygon << QPointF(0, 0) << QPointF(100, 0) << QPointF(100, 100) << QPointF(0, 100) << QPointF(0, 0);
 			m_myPixMap.load(":/images/server.png");
 			m_myPixMap = m_myPixMap.scaled(125, 125);
 			break;
-		case DiagramType::Display:
+		case TopologyType::Display:
 			m_myPolygon << QPointF(0, 0) << QPointF(100, 0) << QPointF(100, 100) << QPointF(0, 100) << QPointF(0, 0);
 			m_myPixMap.load(":/images/display.png");
 			m_myPixMap = m_myPixMap.scaled(175, 125);
@@ -35,12 +61,12 @@ DiagramItem::DiagramItem(DiagramType diagramType, QGraphicsItem *parent)
 	setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 }
 
-void DiagramItem::removeArrow(Arrow *arrow)
+void TopologyItem::removeArrow(Arrow *arrow)
 {
 	m_arrows.removeAll(arrow);
 }
 
-void DiagramItem::removeArrows()
+void TopologyItem::removeArrows()
 {
 	// need a copy here since removeArrow() will
 	// modify the m_arrows container
@@ -54,12 +80,12 @@ void DiagramItem::removeArrows()
 	}
 }
 
-void DiagramItem::addArrow(Arrow *arrow)
+void TopologyItem::addArrow(Arrow *arrow)
 {
 	m_arrows.append(arrow);
 }
 
-QPixmap DiagramItem::image() const
+QPixmap TopologyItem::image() const
 {
 	if (!m_myPixMap.isNull())
 	{
@@ -76,7 +102,7 @@ QPixmap DiagramItem::image() const
 	return pixmap;
 }
 
-QVariant DiagramItem::itemChange(GraphicsItemChange change, const QVariant &value)
+QVariant TopologyItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
 	if (change == QGraphicsItem::ItemPositionChange)
 	{

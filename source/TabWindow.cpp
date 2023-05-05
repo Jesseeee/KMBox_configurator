@@ -29,13 +29,13 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QMessageBox>
-#include "MainWindow.hpp"
+#include "topology/TopologyWindow.hpp"
 
 TabWindow::TabWindow(QWidget *parent)
 	: QMainWindow(parent)
 {
-	tabWidget			   = new QTabWidget;
-	MainWindow *mainWindow = new MainWindow(this);
+	tabWidget				   = new QTabWidget;
+	TopologyWindow *mainWindow = new TopologyWindow(this);
 	tabWidget->addTab(mainWindow, tr("Topology"));
 
 	QVBoxLayout *mainLayout = new QVBoxLayout;
@@ -51,7 +51,7 @@ TabWindow::TabWindow(QWidget *parent)
 	// TODO move to create actions
 	exitAction = new QAction(tr("E&xit"), this);
 	exitAction->setShortcuts(QKeySequence::Quit);
-	exitAction->setStatusTip(tr("Quit Scenediagram example"));
+	exitAction->setStatusTip(tr("Quit KMBox configurator"));
 	connect(exitAction, &QAction::triggered, this, &QWidget::close);
 
 	aboutAction = new QAction(tr("A&bout"), this);

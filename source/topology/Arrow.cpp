@@ -1,11 +1,37 @@
+/**
+ * @file Arrow.cpp
+ *
+ * @brief TODO
+ *
+ * &copy; Copyright 2023 ScioTeq bv. All rights reserved.
+ * +-------------------------------------------------------------------------------------------+
+ * |                             Export Control Information                                    |
+ * +--------+-------------+-------------------------------------+----------->-------------------+
+ * | Origin |   Country   |     Jurisdiction & Control List     |     Authorization number     |
+ * +--------+-------------+-------------------------------------+------------------------------+
+ * |    X   |   Belgium   |                 n/a                 |              n/a             |
+ * |        |             +-------------------------------------+------------------------------+
+ * |        |             |  Export control marking is not applicable to Belgian regulations.  |
+ * +--------+-------------+--------------------------------------------------------------------+
+ *
+ * <H3>Purpose</H3>
+ * - <!--purpose-->
+ *
+ * <H3>Notes</H3>
+ * - <!--notes-->
+ *
+ * <H3>Author</H3>
+ * - May 06, 2023 ; jesvan
+ */
+
 #include "Arrow.hpp"
-#include "DiagramItem.hpp"
+#include "TopologyItem.hpp"
 
 #include <QPainter>
 #include <QPen>
 #include <QtMath>
 
-Arrow::Arrow(DiagramItem *startItem, DiagramItem *endItem, QGraphicsItem *parent)
+Arrow::Arrow(TopologyItem *startItem, TopologyItem *endItem, QGraphicsItem *parent)
 	: QGraphicsLineItem(parent)
 	, m_myStartItem(startItem)
 	, m_myEndItem(endItem)
@@ -57,7 +83,9 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *
 		QLineF					 polyLine(p1, p2);
 		QLineF::IntersectionType intersectionType(polyLine.intersects(centerLine, &intersectPoint));
 		if (intersectionType == QLineF::BoundedIntersection)
+		{
 			break;
+		}
 		p1 = p2;
 	}
 

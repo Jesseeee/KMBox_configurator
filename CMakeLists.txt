@@ -20,16 +20,16 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
 
 set(PROJECT_SOURCES
     source/main.cpp
-	source/MainWindow.cpp
-    source/MainWindow.hpp
-	source/Arrow.cpp
-	source/Arrow.hpp
-	source/DiagramItem.cpp
-	source/DiagramItem.hpp
-	source/DiagramScene.cpp
-	source/DiagramScene.hpp
 	source/TabWindow.cpp
 	source/TabWindow.hpp
+	source/topology/TopologyWindow.cpp
+    source/topology/TopologyWindow.hpp
+	source/topology/Arrow.cpp
+	source/topology/Arrow.hpp
+	source/topology/TopologyItem.cpp
+	source/topology/TopologyItem.hpp
+	source/topology/TopologyScene.cpp
+	source/topology/TopologyScene.hpp
 )
 
 qt_add_executable(KMBox_configurator
