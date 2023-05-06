@@ -1,5 +1,5 @@
 /**
- * @file TopologyScene.hpp
+ * @file LayoutWindow.hpp
  *
  * @brief TODO
  *
@@ -23,51 +23,30 @@
  * <H3>Author</H3>
  * - May 06, 2023 ; jesvan
  */
-#ifndef TOPOLOGYSCENE_HPP_
-#define TOPOLOGYSCENE_HPP_
+#ifndef LAYOUTWINDOW_HPP_
+#define LAYOUTWINDOW_HPP_
 
-#include "TopologyItem.hpp"
+#include <QMainWindow>
 
-#include <QGraphicsScene>
+class LayoutScene;
+class QGraphicsView;
 
-QT_BEGIN_NAMESPACE
-class QGraphicsSceneMouseEvent;
-class QPointF;
-class QGraphicsLineItem;
-QT_END_NAMESPACE
-
-class TopologyScene : public QGraphicsScene
+class LayoutWindow : public QMainWindow
 {
 	Q_OBJECT
 public:
-	enum class Mode
-	{
-		InsertItem,
-		InsertLine,
-		MoveItem
-	};
+	explicit LayoutWindow(QWidget *parent = nullptr);
+	~LayoutWindow() override;
 
-	explicit TopologyScene(QObject *parent = nullptr);
-
-public slots:
-	void setMode(Mode mode);
-	void setItemType(TopologyItem::TopologyType type);
-
-signals:
-	void itemInserted(TopologyItem *item);
-
-protected:
-	void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
-	void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
-	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+	// Disable copy and move semantics by default
+	LayoutWindow(const LayoutWindow &)			  = delete;
+	LayoutWindow(LayoutWindow &&)				  = delete;
+	LayoutWindow &operator=(const LayoutWindow &) = delete;
+	LayoutWindow &operator=(LayoutWindow &&)	  = delete;
 
 private:
-	bool isItemChange(int type) const;
-
-	TopologyItem::TopologyType m_myItemType		= TopologyItem::TopologyType::Server;
-	Mode					   m_myMode			= Mode::MoveItem;
-	bool					   m_leftButtonDown = false;
-	QGraphicsLineItem		  *m_line			= nullptr;
+	LayoutScene	  *scene = nullptr;
+	QGraphicsView *view;
 };
 
-#endif // DIAGRAMSCENE_H
+#endif

@@ -158,7 +158,7 @@ void TopologyWindow::createToolBox()
 			&TopologyWindow::buttonGroupClicked);
 	auto *layout = new QGridLayout;
 	layout->addWidget(createCellWidget(tr("Server"), TopologyItem::TopologyType::Server), 0, 0);
-	layout->addWidget(createCellWidget(tr("Server"), TopologyItem::TopologyType::Display), 1, 0);
+	layout->addWidget(createCellWidget(tr("Display"), TopologyItem::TopologyType::Display), 1, 0);
 	layout->setRowStretch(3, 10);
 	layout->setColumnStretch(2, 10);
 

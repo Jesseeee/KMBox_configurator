@@ -30,15 +30,15 @@
 
 #include <QMainWindow>
 
+#include <functional>
+
 class TopologyScene;
 
 QT_BEGIN_NAMESPACE
 class QAction;
 class QToolBox;
-class QSpinBox;
 class QComboBox;
 class QButtonGroup;
-class QLineEdit;
 class QToolButton;
 class QAbstractButton;
 class QGraphicsView;

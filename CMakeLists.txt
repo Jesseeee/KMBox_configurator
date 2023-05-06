@@ -30,6 +30,11 @@ set(PROJECT_SOURCES
 	source/topology/TopologyItem.hpp
 	source/topology/TopologyScene.cpp
 	source/topology/TopologyScene.hpp
+	source/layout/LayoutWindow.cpp
+	source/layout/LayoutWindow.hpp
+	source/layout/LayoutScene.cpp
+	source/layout/LayoutScene.hpp
+	source/layout/ResizeableRectItem.hpp
 )
 
 qt_add_executable(KMBox_configurator

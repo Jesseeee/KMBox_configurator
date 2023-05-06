@@ -101,7 +101,7 @@ void TopologyScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		{
 			TopologyItem *startItem = qgraphicsitem_cast<TopologyItem *>(startItems.first());
 			TopologyItem *endItem	= qgraphicsitem_cast<TopologyItem *>(endItems.first());
-			Arrow		 *arrow		= new Arrow(startItem, endItem);
+			auto		 *arrow		= new Arrow(startItem, endItem);
 			startItem->addArrow(arrow);
 			endItem->addArrow(arrow);
 			arrow->setZValue(-1000.0);

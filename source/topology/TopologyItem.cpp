@@ -36,6 +36,7 @@ TopologyItem::TopologyItem(TopologyType diagramType, QGraphicsItem *parent)
 	: QGraphicsPixmapItem(parent)
 	, m_myDiagramType(diagramType)
 {
+	// We still create the polygon as it's abused for line drawing
 	QPainterPath path;
 	switch (m_myDiagramType)
 	{
@@ -55,7 +56,6 @@ TopologyItem::TopologyItem(TopologyType diagramType, QGraphicsItem *parent)
 			break;
 	}
 	setPixmap(m_myPixMap);
-	// setPolygon(m_myPolygon);
 	setFlag(QGraphicsItem::ItemIsMovable, true);
 	setFlag(QGraphicsItem::ItemIsSelectable, true);
 	setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
