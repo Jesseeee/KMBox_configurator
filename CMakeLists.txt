@@ -34,6 +34,7 @@ set(PROJECT_SOURCES
 	source/layout/LayoutWindow.hpp
 	source/layout/LayoutScene.cpp
 	source/layout/LayoutScene.hpp
+	source/layout/ResizeableRectItem.cpp
 	source/layout/ResizeableRectItem.hpp
 )
 

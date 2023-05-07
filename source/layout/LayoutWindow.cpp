@@ -55,7 +55,7 @@ LayoutWindow::LayoutWindow(QWidget *parent)
 	setGeometry(100, 100, 800, 500);
 
 	// TODO - remove later, this is for proof of concept, which works!
-	ResizableRectItem *rectItem = new ResizableRectItem;
+	ResizeableRectItem *rectItem = new ResizeableRectItem;
 	rectItem->setRect(50, 50, 100, 100);
 	scene->addItem(rectItem);
 }
