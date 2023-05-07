@@ -15,7 +15,7 @@ public:
 		setCursor(Qt::SizeAllCursor);
 	}
 
-	enum HandleAnchor
+	enum class HandleAnchor
 	{
 		TopLeft,
 		Top,
@@ -30,7 +30,9 @@ public:
 
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override
 	{
-		QGraphicsRectItem::paint(painter, option, widget);
+		QRectF currentrect = this->rect();
+		painter->setPen(QPen(Qt::black, 1));
+		painter->drawRect(currentrect);
 		const qreal handleSize	= 8;
 		const qreal handleSpace = 2;
 		QRectF		rect		= boundingRect();
@@ -63,38 +65,42 @@ public:
 	}
 
 protected:
-	void mousePressEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE { m_anchor = getHandleAnchor(event->pos()); }
+	void mousePressEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE
+	{
+		m_anchor = getHandleAnchor(event->pos());
+		QGraphicsRectItem::mousePressEvent(event);
+	}
 
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE
 	{
-		if (m_anchor != None)
+		if (m_anchor != HandleAnchor::None)
 		{
 			QRectF	rect  = this->rect();
 			QPointF delta = event->pos() - event->lastPos();
 			switch (m_anchor)
 			{
-				case TopLeft:
+				case HandleAnchor::TopLeft:
 					rect.setTopLeft(rect.topLeft() + delta);
 					break;
-				case Top:
+				case HandleAnchor::Top:
 					rect.setTop(rect.y() + delta.y());
 					break;
-				case TopRight:
+				case HandleAnchor::TopRight:
 					rect.setTopRight(rect.topRight() + delta);
 					break;
-				case Right:
+				case HandleAnchor::Right:
 					rect.setRight(rect.right() + delta.x());
 					break;
-				case BottomRight:
+				case HandleAnchor::BottomRight:
 					rect.setBottomRight(rect.bottomRight() + delta);
 					break;
-				case Bottom:
+				case HandleAnchor::Bottom:
 					rect.setBottom(rect.bottom() + delta.y());
 					break;
-				case BottomLeft:
+				case HandleAnchor::BottomLeft:
 					rect.setBottomLeft(rect.bottomLeft() + delta);
 					break;
-				case Left:
+				case HandleAnchor::Left:
 					rect.setLeft(rect.left() + delta.x());
 					break;
 				default:
@@ -102,12 +108,16 @@ protected:
 			}
 			setRect(rect);
 		}
+		else
+		{
+			QGraphicsRectItem::mouseMoveEvent(event);
+		}
 	}
 
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE
 	{
-		Q_UNUSED(event)
-		m_anchor = None;
+		m_anchor = HandleAnchor::None;
+		QGraphicsRectItem::mouseReleaseEvent(event);
 	}
 
 private:
@@ -124,24 +134,24 @@ private:
 		QPointF mr	 = rect.topRight() + QPointF(0, rect.height() / 2);
 
 		if ((tl - point).manhattanLength() <= 4)
-			return TopLeft;
+			return HandleAnchor::TopLeft;
 		if ((tr - point).manhattanLength() <= 4)
-			return TopRight;
+			return HandleAnchor::TopRight;
 		if ((bl - point).manhattanLength() <= 4)
-			return BottomLeft;
+			return HandleAnchor::BottomLeft;
 		if ((br - point).manhattanLength() <= 4)
-			return BottomRight;
+			return HandleAnchor::BottomRight;
 		if ((mt - point).manhattanLength() <= 4)
-			return Top;
+			return HandleAnchor::Top;
 		if ((mb - point).manhattanLength() <= 4)
-			return Bottom;
+			return HandleAnchor::Bottom;
 		if ((ml - point).manhattanLength() <= 4)
-			return Left;
+			return HandleAnchor::Left;
 		if ((mr - point).manhattanLength() <= 4)
-			return Right;
+			return HandleAnchor::Right;
 
-		return None;
+		return HandleAnchor::None;
 	}
 
-	HandleAnchor m_anchor = None;
+	HandleAnchor m_anchor = HandleAnchor::None;
 };
