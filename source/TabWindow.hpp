@@ -32,7 +32,6 @@ class TabWindow : public QMainWindow
 {
 public:
 	explicit TabWindow(QWidget *parent = nullptr);
-	~TabWindow() override;
 
 	// Disable copy and move semantics by default
 	TabWindow(const TabWindow &)			= delete;
@@ -44,13 +43,13 @@ private Q_SLOTS:
 	void about();
 
 private:
-	QTabWidget *tabWidget;
+	QTabWidget *tabWidget = nullptr;
 
-	QMenu *fileMenu;
-	QMenu *aboutMenu;
+	QMenu *fileMenu	 = nullptr;
+	QMenu *aboutMenu = nullptr;
 
-	QAction *exitAction;
-	QAction *aboutAction;
+	QAction *exitAction	 = nullptr;
+	QAction *aboutAction = nullptr;
 };
 
 #endif

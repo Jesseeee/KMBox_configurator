@@ -35,6 +35,7 @@ class ResizeableRectItem : public QGraphicsRectItem
 {
 public:
 	explicit ResizeableRectItem(QGraphicsItem *parent = nullptr);
+	~ResizeableRectItem() override = default;
 
 	enum class HandleAnchor
 	{
@@ -63,7 +64,7 @@ protected:
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
 private:
-	HandleAnchor getHandleAnchor(const QPointF &point) const;
+	[[nodiscard]] HandleAnchor getHandleAnchor(const QPointF &point) const;
 
 	HandleAnchor m_anchor = HandleAnchor::None;
 };

@@ -46,7 +46,7 @@ public:
 
 private:
 	LayoutScene	  *scene = nullptr;
-	QGraphicsView *view;
+	QGraphicsView *view	 = nullptr;
 };
 
 #endif

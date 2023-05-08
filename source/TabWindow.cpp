@@ -39,10 +39,10 @@ TabWindow::TabWindow(QWidget *parent)
 	tabWidget->addTab(new TopologyWindow(this), tr("Topology"));
 	tabWidget->addTab(new LayoutWindow(this), tr("Layout"));
 
-	QVBoxLayout *mainLayout = new QVBoxLayout;
+	auto *mainLayout = new QVBoxLayout;
 	mainLayout->addWidget(tabWidget);
 
-	QWidget *widget = new QWidget;
+	auto *widget = new QWidget;
 	widget->setLayout(mainLayout);
 
 	setCentralWidget(widget);
@@ -66,8 +66,6 @@ TabWindow::TabWindow(QWidget *parent)
 	aboutMenu = menuBar()->addMenu(tr("&Help"));
 	aboutMenu->addAction(aboutAction);
 }
-
-TabWindow::~TabWindow() {}
 
 void TabWindow::about()
 {

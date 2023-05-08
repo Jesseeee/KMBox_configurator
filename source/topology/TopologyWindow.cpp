@@ -42,12 +42,12 @@ TopologyWindow::TopologyWindow(QWidget *parent)
 	connect(scene, &TopologyScene::itemInserted, this, &TopologyWindow::itemInserted);
 	createToolbars();
 
-	QHBoxLayout *layout = new QHBoxLayout;
+	auto *layout = new QHBoxLayout;
 	layout->addWidget(toolBox);
 	view = new QGraphicsView(scene);
 	layout->addWidget(view);
 
-	QWidget *widget = new QWidget;
+	auto *widget = new QWidget;
 	widget->setLayout(layout);
 
 	setCentralWidget(widget);
@@ -101,7 +101,9 @@ void TopologyWindow::pointerGroupClicked()
 void TopologyWindow::bringToFront()
 {
 	if (scene->selectedItems().isEmpty())
+	{
 		return;
+	}
 
 	QGraphicsItem				*selectedItem = scene->selectedItems().first();
 	const QList<QGraphicsItem *> overlapItems = selectedItem->collidingItems();
@@ -110,7 +112,9 @@ void TopologyWindow::bringToFront()
 	for (const QGraphicsItem *item : overlapItems)
 	{
 		if (item->zValue() >= zValue && item->type() == TopologyItem::Type)
+		{
 			zValue = item->zValue() + 0.1;
+		}
 	}
 	selectedItem->setZValue(zValue);
 }
@@ -118,7 +122,9 @@ void TopologyWindow::bringToFront()
 void TopologyWindow::sendToBack()
 {
 	if (scene->selectedItems().isEmpty())
+	{
 		return;
+	}
 
 	QGraphicsItem				*selectedItem = scene->selectedItems().first();
 	const QList<QGraphicsItem *> overlapItems = selectedItem->collidingItems();
@@ -127,7 +133,9 @@ void TopologyWindow::sendToBack()
 	for (const QGraphicsItem *item : overlapItems)
 	{
 		if (item->zValue() <= zValue && item->type() == TopologyItem::Type)
+		{
 			zValue = item->zValue() - 0.1;
+		}
 	}
 	selectedItem->setZValue(zValue);
 }
@@ -141,8 +149,8 @@ void TopologyWindow::itemInserted(TopologyItem *item)
 
 void TopologyWindow::sceneScaleChanged(const QString &scale)
 {
-	double	   newScale	 = scale.left(scale.indexOf(tr("%"))).toDouble() / 100.0;
-	QTransform oldMatrix = view->transform();
+	const double	 newScale  = scale.left(scale.indexOf(tr("%"))).toDouble() / 100.0;
+	const QTransform oldMatrix = view->transform();
 	view->resetTransform();
 	view->translate(oldMatrix.dx(), oldMatrix.dy());
 	view->scale(newScale, newScale);
@@ -227,8 +235,8 @@ void TopologyWindow::createToolbars()
 
 QWidget *TopologyWindow::createCellWidget(const QString &text, TopologyItem::TopologyType type)
 {
-	TopologyItem item(type);
-	QIcon		 icon(item.image());
+	const TopologyItem item(type);
+	const QIcon		   icon(item.image());
 
 	auto *button = new QToolButton;
 	button->setIcon(icon);

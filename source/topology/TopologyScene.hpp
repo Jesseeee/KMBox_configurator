@@ -62,7 +62,7 @@ protected:
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 
 private:
-	bool isItemChange(int type) const;
+	[[nodiscard]] bool isItemChange(int type) const;
 
 	TopologyItem::TopologyType m_myItemType		= TopologyItem::TopologyType::Server;
 	Mode					   m_myMode			= Mode::MoveItem;

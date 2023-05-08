@@ -55,11 +55,11 @@ public:
 
 	void		 removeArrow(Arrow *arrow);
 	void		 removeArrows();
-	TopologyType diagramType() const { return m_myDiagramType; }
-	QPolygonF	 polygon() const { return m_myPolygon; }
+	[[nodiscard]] TopologyType diagramType() const { return m_myDiagramType; }
+	[[nodiscard]] QPolygonF polygon() const { return m_myPolygon; }
 	void		 addArrow(Arrow *arrow);
-	QPixmap		 image() const;
-	int			 type() const override { return Type; }
+	[[nodiscard]] QPixmap image() const;
+	[[nodiscard]] int type() const override { return Type; }
 
 protected:
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;

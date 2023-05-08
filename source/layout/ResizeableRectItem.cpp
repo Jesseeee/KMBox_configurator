@@ -26,6 +26,9 @@
 
 #include "ResizeableRectItem.hpp"
 
+static const int32_t	 HANDLE_RECT_SIZE	  = 8;
+static constexpr int32_t HANDLE_RECT_HALFSIZE = HANDLE_RECT_SIZE / 2;
+
 ResizeableRectItem::ResizeableRectItem(QGraphicsItem *parent)
 	: QGraphicsRectItem(parent)
 {
@@ -36,26 +39,19 @@ ResizeableRectItem::ResizeableRectItem(QGraphicsItem *parent)
 void ResizeableRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 	QGraphicsRectItem::paint(painter, option, widget);
-	// TODO To fix the trailing squares left behind we need to restrict the squares to inside the rectangle
-	// As we can't move the bounding rect outside the square as that would mess up redrawing
-	// QRectF currentrect = this->rect();
-	// painter->setPen(QPen(Qt::black, 1));
-	// painter->drawRect(currentrect);
-	const qreal	   handleSize  = 8;
-	const qreal	   handleSpace = 2;
 	QRectF		   rect		   = boundingRect();
-	QPointF		   topLeft	   = rect.topLeft() + QPointF(4, 4);
-	QPointF		   topRight	   = rect.topRight() + QPointF(-4, 4);
-	QPointF		   bottomLeft  = rect.bottomLeft() + QPointF(4, -4);
-	QPointF		   bottomRight = rect.bottomRight() + QPointF(-4, -4);
-	QPointF		   midTop	   = rect.topLeft() + QPointF(rect.width() / 2, 4);
-	QPointF		   midBottom   = rect.bottomLeft() + QPointF(rect.width() / 2, -4);
-	QPointF		   midLeft	   = rect.topLeft() + QPointF(4, rect.height() / 2);
-	QPointF		   midRight	   = rect.topRight() + QPointF(-4, rect.height() / 2);
+	QPointF		   topLeft	   = rect.topLeft() + QPointF(HANDLE_RECT_HALFSIZE, HANDLE_RECT_HALFSIZE);
+	QPointF		   topRight	   = rect.topRight() + QPointF(-HANDLE_RECT_HALFSIZE, HANDLE_RECT_HALFSIZE);
+	QPointF		   bottomLeft  = rect.bottomLeft() + QPointF(HANDLE_RECT_HALFSIZE, -HANDLE_RECT_HALFSIZE);
+	QPointF		   bottomRight = rect.bottomRight() + QPointF(-HANDLE_RECT_HALFSIZE, -HANDLE_RECT_HALFSIZE);
+	QPointF		   midTop	   = rect.topLeft() + QPointF(rect.width() / 2, HANDLE_RECT_HALFSIZE);
+	QPointF		   midBottom   = rect.bottomLeft() + QPointF(rect.width() / 2, -HANDLE_RECT_HALFSIZE);
+	QPointF		   midLeft	   = rect.topLeft() + QPointF(HANDLE_RECT_HALFSIZE, rect.height() / 2);
+	QPointF		   midRight	   = rect.topRight() + QPointF(-HANDLE_RECT_HALFSIZE, rect.height() / 2);
 	QList<QPointF> anchorList;
 	anchorList << topLeft << topRight << bottomLeft << bottomRight << midTop << midBottom << midLeft << midRight;
 	QRectF handleRect;
-	handleRect.setSize(QSizeF(handleSize, handleSize));
+	handleRect.setSize(QSizeF(HANDLE_RECT_SIZE, HANDLE_RECT_SIZE));
 	for (const QPointF &location : anchorList)
 	{
 		handleRect.moveCenter(location);
@@ -73,8 +69,8 @@ void ResizeableRectItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	if (m_anchor != HandleAnchor::None)
 	{
-		QRectF	rect  = this->rect();
-		QPointF delta = event->pos() - event->lastPos();
+		QRectF		  rect	= this->rect();
+		const QPointF delta = event->pos() - event->lastPos();
 		switch (m_anchor)
 		{
 			case HandleAnchor::TopLeft:
@@ -120,32 +116,48 @@ void ResizeableRectItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 ResizeableRectItem::HandleAnchor ResizeableRectItem::getHandleAnchor(const QPointF &point) const
 {
-	QRectF	rect		= this->rect();
-	QPointF topLeft		= rect.topLeft() + QPointF(4, 4);
-	QPointF topRight	= rect.topRight() + QPointF(-4, 4);
-	QPointF bottomLeft	= rect.bottomLeft() + QPointF(4, -4);
-	QPointF bottomRight = rect.bottomRight() + QPointF(-4, -4);
-	QPointF midTop		= rect.topLeft() + QPointF(rect.width() / 2, 4);
-	QPointF midBottom	= rect.bottomLeft() + QPointF(rect.width() / 2, -4);
-	QPointF midLeft		= rect.topLeft() + QPointF(4, rect.height() / 2);
-	QPointF midRight	= rect.topRight() + QPointF(-4, rect.height() / 2);
+	QRectF		  rect		  = this->rect();
+	const QPointF topLeft	  = rect.topLeft() + QPointF(HANDLE_RECT_HALFSIZE, HANDLE_RECT_HALFSIZE);
+	const QPointF topRight	  = rect.topRight() + QPointF(-HANDLE_RECT_HALFSIZE, HANDLE_RECT_HALFSIZE);
+	const QPointF bottomLeft  = rect.bottomLeft() + QPointF(HANDLE_RECT_HALFSIZE, -HANDLE_RECT_HALFSIZE);
+	const QPointF bottomRight = rect.bottomRight() + QPointF(-HANDLE_RECT_HALFSIZE, -HANDLE_RECT_HALFSIZE);
+	const QPointF midTop	  = rect.topLeft() + QPointF(rect.width() / 2, HANDLE_RECT_HALFSIZE);
+	const QPointF midBottom	  = rect.bottomLeft() + QPointF(rect.width() / 2, -HANDLE_RECT_HALFSIZE);
+	const QPointF midLeft	  = rect.topLeft() + QPointF(HANDLE_RECT_HALFSIZE, rect.height() / 2);
+	const QPointF midRight	  = rect.topRight() + QPointF(-HANDLE_RECT_HALFSIZE, rect.height() / 2);
 
-	if ((topLeft - point).manhattanLength() <= 8)
+	if ((topLeft - point).manhattanLength() <= HANDLE_RECT_SIZE)
+	{
 		return HandleAnchor::TopLeft;
-	if ((topRight - point).manhattanLength() <= 8)
+	}
+	if ((topRight - point).manhattanLength() <= HANDLE_RECT_SIZE)
+	{
 		return HandleAnchor::TopRight;
-	if ((bottomLeft - point).manhattanLength() <= 8)
+	}
+	if ((bottomLeft - point).manhattanLength() <= HANDLE_RECT_SIZE)
+	{
 		return HandleAnchor::BottomLeft;
-	if ((bottomRight - point).manhattanLength() <= 8)
+	}
+	if ((bottomRight - point).manhattanLength() <= HANDLE_RECT_SIZE)
+	{
 		return HandleAnchor::BottomRight;
-	if ((midTop - point).manhattanLength() <= 8)
+	}
+	if ((midTop - point).manhattanLength() <= HANDLE_RECT_SIZE)
+	{
 		return HandleAnchor::Top;
-	if ((midBottom - point).manhattanLength() <= 8)
+	}
+	if ((midBottom - point).manhattanLength() <= HANDLE_RECT_SIZE)
+	{
 		return HandleAnchor::Bottom;
-	if ((midLeft - point).manhattanLength() <= 8)
+	}
+	if ((midLeft - point).manhattanLength() <= HANDLE_RECT_SIZE)
+	{
 		return HandleAnchor::Left;
-	if ((midRight - point).manhattanLength() <= 8)
+	}
+	if ((midRight - point).manhattanLength() <= HANDLE_RECT_SIZE)
+	{
 		return HandleAnchor::Right;
+	}
 
 	return HandleAnchor::None;
 }

@@ -36,17 +36,22 @@ LayoutWindow::LayoutWindow(QWidget *parent)
 	: QMainWindow(parent)
 {
 	scene = new LayoutScene(this);
-	scene->setSceneRect(QRectF(0, 0, 5000, 5000));
+	scene->setSceneRect(QRectF(0, 0, 4000, 4000));
 
-	QHBoxLayout *layout = new QHBoxLayout;
-	view				= new QGraphicsView(scene);
+	auto *layout = new QHBoxLayout;
+	view		 = new QGraphicsView(scene);
+
+	const QTransform oldMatrix = view->transform();
+	view->resetTransform();
+	view->translate(oldMatrix.dx(), oldMatrix.dy());
+	view->scale(0.5, 0.5);
 
 	view->setRenderHint(QPainter::Antialiasing);
 	view->setDragMode(QGraphicsView::RubberBandDrag);
 
 	layout->addWidget(view);
 
-	QWidget *widget = new QWidget;
+	auto *widget = new QWidget;
 	widget->setLayout(layout);
 
 	setCentralWidget(widget);

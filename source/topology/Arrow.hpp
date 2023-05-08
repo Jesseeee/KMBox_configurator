@@ -40,11 +40,11 @@ public:
 
 	Arrow(TopologyItem *startItem, TopologyItem *endItem, QGraphicsItem *parent = nullptr);
 
-	int			  type() const override { return Type; }
-	QRectF		  boundingRect() const override;
-	QPainterPath  shape() const override;
-	TopologyItem *startItem() const { return m_myStartItem; }
-	TopologyItem *endItem() const { return m_myEndItem; }
+	[[nodiscard]] int			type() const override { return Type; }
+	[[nodiscard]] QRectF		boundingRect() const override;
+	[[nodiscard]] QPainterPath	shape() const override;
+	[[nodiscard]] TopologyItem *startItem() const { return m_myStartItem; }
+	[[nodiscard]] TopologyItem *endItem() const { return m_myEndItem; }
 
 	void updatePosition();
 

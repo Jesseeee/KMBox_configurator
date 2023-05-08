@@ -66,24 +66,24 @@ private:
 	void	 createToolbars();
 	QWidget *createCellWidget(const QString &text, TopologyItem::TopologyType type);
 
-	TopologyScene *scene;
-	QGraphicsView *view;
+	TopologyScene *scene = nullptr;
+	QGraphicsView *view	 = nullptr;
 
-	QAction *addAction;
-	QAction *deleteAction;
+	QAction *addAction	  = nullptr;
+	QAction *deleteAction = nullptr;
 
-	QAction *toFrontAction;
-	QAction *sendBackAction;
+	QAction *toFrontAction	= nullptr;
+	QAction *sendBackAction = nullptr;
 
-	QToolBar *editToolBar;
-	QToolBar *pointerToolbar;
+	QToolBar *editToolBar	 = nullptr;
+	QToolBar *pointerToolbar = nullptr;
 
-	QComboBox *sceneScaleCombo;
+	QComboBox *sceneScaleCombo = nullptr;
 
-	QToolBox	 *toolBox;
-	QButtonGroup *buttonGroup;
-	QButtonGroup *pointerTypeGroup;
-	QButtonGroup *backgroundButtonGroup;
+	QToolBox	 *toolBox				= nullptr;
+	QButtonGroup *buttonGroup			= nullptr;
+	QButtonGroup *pointerTypeGroup		= nullptr;
+	QButtonGroup *backgroundButtonGroup = nullptr;
 };
 
 #endif // MAINWINDOW_H

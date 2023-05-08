@@ -37,7 +37,6 @@ TopologyItem::TopologyItem(TopologyType diagramType, QGraphicsItem *parent)
 	, m_myDiagramType(diagramType)
 {
 	// We still create the polygon as it's abused for line drawing
-	QPainterPath path;
 	switch (m_myDiagramType)
 	{
 		case TopologyType::Server:
@@ -107,7 +106,9 @@ QVariant TopologyItem::itemChange(GraphicsItemChange change, const QVariant &val
 	if (change == QGraphicsItem::ItemPositionChange)
 	{
 		for (Arrow *arrow : std::as_const(m_arrows))
+		{
 			arrow->updatePosition();
+		}
 	}
 
 	return value;

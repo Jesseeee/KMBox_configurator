@@ -48,9 +48,11 @@ void TopologyScene::setItemType(TopologyItem::TopologyType type)
 void TopologyScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	if (mouseEvent->button() != Qt::LeftButton)
+	{
 		return;
+	}
 
-	TopologyItem *item;
+	TopologyItem *item = nullptr;
 	switch (m_myMode)
 	{
 		case Mode::InsertItem:
@@ -73,7 +75,7 @@ void TopologyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	if (m_myMode == Mode::InsertLine && m_line != nullptr)
 	{
-		QLineF newLine(m_line->line().p1(), mouseEvent->scenePos());
+		const QLineF newLine(m_line->line().p1(), mouseEvent->scenePos());
 		m_line->setLine(newLine);
 	}
 	else if (m_myMode == Mode::MoveItem)
@@ -88,10 +90,14 @@ void TopologyScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 	{
 		QList<QGraphicsItem *> startItems = items(m_line->line().p1());
 		if (startItems.count() && startItems.first() == m_line)
+		{
 			startItems.removeFirst();
+		}
 		QList<QGraphicsItem *> endItems = items(m_line->line().p2());
 		if (endItems.count() && endItems.first() == m_line)
+		{
 			endItems.removeFirst();
+		}
 
 		removeItem(m_line);
 		delete m_line;

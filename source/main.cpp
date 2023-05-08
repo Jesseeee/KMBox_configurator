@@ -7,10 +7,10 @@ int main(int argv, char *args[])
 {
 	Q_INIT_RESOURCE(configurator);
 
-	QApplication app(argv, args);
+	const QApplication app(argv, args);
 
 	TabWindow tabWindow;
 	tabWindow.show();
 
-	return app.exec();
+	return QApplication::exec();
 }
