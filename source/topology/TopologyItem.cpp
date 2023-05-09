@@ -32,6 +32,8 @@
 #include <QMenu>
 #include <QPainter>
 
+static const qreal ANCHOR_SIZE = 10;
+
 TopologyItem::TopologyItem(TopologyType diagramType, QGraphicsItem *parent)
 	: QGraphicsPixmapItem(parent)
 	, m_myDiagramType(diagramType)
@@ -40,38 +42,32 @@ TopologyItem::TopologyItem(TopologyType diagramType, QGraphicsItem *parent)
 	switch (m_myDiagramType)
 	{
 		case TopologyType::Server:
-			m_myPolygon << QPointF(0, 0) << QPointF(100, 0) << QPointF(100, 100) << QPointF(0, 100) << QPointF(0, 0);
 			m_myPixMap.load(":/images/server.png");
 			m_myPixMap = m_myPixMap.scaled(125, 125);
 			break;
 		case TopologyType::Display:
-			m_myPolygon << QPointF(0, 0) << QPointF(100, 0) << QPointF(100, 100) << QPointF(0, 100) << QPointF(0, 0);
 			m_myPixMap.load(":/images/display.png");
 			m_myPixMap = m_myPixMap.scaled(175, 125);
 			break;
 		default:
-			m_myPolygon << QPointF(-120, -80) << QPointF(-70, 80) << QPointF(120, 80) << QPointF(70, -80)
-						<< QPointF(-120, -80);
+			qDebug() << "Invalid type passed";
 			break;
 	}
 	setPixmap(m_myPixMap);
-	setFlag(QGraphicsItem::ItemIsMovable, true);
-	setFlag(QGraphicsItem::ItemIsSelectable, true);
-	setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
+	setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemSendsGeometryChanges);
 
 	// Create four anchor points in the corners of the pixmap
 	// TODO - needs to be adjusted per different topology item
-	const qreal	  anchorSize = 10;
 	const QPointF topLeftAnchor(0, 0);
-	const QPointF topRightAnchor(m_myPixMap.width() - anchorSize, 0);
-	const QPointF bottomLeftAnchor(0, m_myPixMap.height() - anchorSize);
-	const QPointF bottomRightAnchor(m_myPixMap.width() - anchorSize, m_myPixMap.height() - anchorSize);
+	const QPointF topRightAnchor(m_myPixMap.width() - ANCHOR_SIZE, 0);
+	const QPointF bottomLeftAnchor(0, m_myPixMap.height() - ANCHOR_SIZE);
+	const QPointF bottomRightAnchor(m_myPixMap.width() - ANCHOR_SIZE, m_myPixMap.height() - ANCHOR_SIZE);
 
 	m_anchors.reserve(4);
-	m_anchors.push_back(createAnchor(topLeftAnchor, anchorSize));
-	m_anchors.push_back(createAnchor(topRightAnchor, anchorSize));
-	m_anchors.push_back(createAnchor(bottomLeftAnchor, anchorSize));
-	m_anchors.push_back(createAnchor(bottomRightAnchor, anchorSize));
+	m_anchors.push_back(createAnchor(topLeftAnchor));
+	m_anchors.push_back(createAnchor(topRightAnchor));
+	m_anchors.push_back(createAnchor(bottomLeftAnchor));
+	m_anchors.push_back(createAnchor(bottomRightAnchor));
 }
 
 void TopologyItem::removeArrow(Arrow *arrow)
@@ -98,23 +94,6 @@ void TopologyItem::addArrow(Arrow *arrow)
 	m_arrows.append(arrow);
 }
 
-QPixmap TopologyItem::image() const
-{
-	if (!m_myPixMap.isNull())
-	{
-		return m_myPixMap;
-	}
-
-	QPixmap pixmap(250, 250);
-	pixmap.fill(Qt::transparent);
-	QPainter painter(&pixmap);
-	painter.setPen(QPen(Qt::black, 8));
-	painter.translate(125, 125);
-	painter.drawPolyline(m_myPolygon);
-
-	return pixmap;
-}
-
 QVariant TopologyItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
 	if (change == QGraphicsItem::ItemPositionChange)
@@ -126,22 +105,6 @@ QVariant TopologyItem::itemChange(GraphicsItemChange change, const QVariant &val
 	}
 
 	return value;
-}
-
-void TopologyItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-	QGraphicsItem		 *clickedItem	= scene()->itemAt(event->scenePos(), QTransform());
-	QGraphicsEllipseItem *clickedAnchor = qgraphicsitem_cast<QGraphicsEllipseItem *>(clickedItem);
-
-	// TODO add handling for when an anchor is clicked to draw arrows
-	// The user clicked outside an anchor point, handle the event as usual
-	QGraphicsPixmapItem::mousePressEvent(event);
-}
-
-void TopologyItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
-	// TODO - add this handling for now pass it
-	QGraphicsPixmapItem::mouseReleaseEvent(event);
 }
 
 void TopologyItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -156,9 +119,9 @@ void TopologyItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	}
 }
 
-QGraphicsEllipseItem *TopologyItem::createAnchor(const QPointF &pos, qreal size)
+QGraphicsEllipseItem *TopologyItem::createAnchor(const QPointF &pos)
 {
-	QGraphicsEllipseItem *anchor = new QGraphicsEllipseItem(QRectF(pos, QSizeF(size, size)), this);
+	QGraphicsEllipseItem *anchor = new QGraphicsEllipseItem(QRectF(pos, QSizeF(ANCHOR_SIZE, ANCHOR_SIZE)), this);
 	anchor->setPen(QPen(Qt::black, 1));
 	anchor->setBrush(QBrush(Qt::red));
 	anchor->setFlag(QGraphicsItem::ItemIsMovable, true);

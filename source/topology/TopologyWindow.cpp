@@ -56,6 +56,19 @@ TopologyWindow::TopologyWindow(QWidget *parent)
 	setGeometry(100, 100, 800, 500);
 }
 
+std::vector<TopologyItem *> TopologyWindow::getAllTopologyItems() const
+{
+	std::vector<TopologyItem *> topologyItems;
+	for (QGraphicsItem *item : scene->items())
+	{
+		if (item->type() == TopologyItem::Type)
+		{
+			topologyItems.push_back(qgraphicsitem_cast<TopologyItem *>(item));
+		}
+	}
+	return topologyItems;
+}
+
 void TopologyWindow::buttonGroupClicked(QAbstractButton *button)
 {
 	for (const QAbstractButton *myButton : buttonGroup->buttons())
@@ -195,11 +208,17 @@ void TopologyWindow::createActions()
 	deleteAction->setShortcut(tr("Delete"));
 	deleteAction->setStatusTip(tr("Delete item from diagram"));
 	connect(deleteAction, &QAction::triggered, this, &TopologyWindow::deleteItem);
+
+	saveTopologyAction = new QAction(QIcon(":/images/save.png"), tr("Save the topology"), this);
+	saveTopologyAction->setShortcut(tr("Ctrl+Enter"));
+	saveTopologyAction->setStatusTip(tr("Save the topology so it can be used in the layout"));
+	connect(saveTopologyAction, &QAction::triggered, this, &TopologyWindow::saveTopology);
 }
 
 void TopologyWindow::createToolbars()
 {
 	editToolBar = addToolBar(tr("Edit"));
+	editToolBar->addAction(saveTopologyAction);
 	editToolBar->addAction(deleteAction);
 	editToolBar->addAction(toFrontAction);
 	editToolBar->addAction(sendBackAction);
@@ -236,7 +255,7 @@ void TopologyWindow::createToolbars()
 QWidget *TopologyWindow::createCellWidget(const QString &text, TopologyItem::TopologyType type)
 {
 	const TopologyItem item(type);
-	const QIcon		   icon(item.image());
+	const QIcon		   icon(item.pixmap());
 
 	auto *button = new QToolButton;
 	button->setIcon(icon);

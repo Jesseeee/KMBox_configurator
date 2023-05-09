@@ -31,87 +31,27 @@
 #include <QPen>
 #include <QtMath>
 
-Arrow::Arrow(TopologyItem *startItem, TopologyItem *endItem, QGraphicsItem *parent)
+Arrow::Arrow(TopologyItem		  *startItem,
+			 TopologyItem		  *endItem,
+			 QGraphicsEllipseItem *startAnchor,
+			 QGraphicsEllipseItem *endAnchor,
+			 QGraphicsItem		  *parent)
 	: QGraphicsLineItem(parent)
-	, m_myStartItem(startItem)
-	, m_myEndItem(endItem)
+	, m_startItem(startItem)
+	, m_endItem(endItem)
+	, m_startAnchor(startAnchor)
+	, m_endAnchor(endAnchor)
 {
+	qDebug() << "Start and end anchor ptr val is " << m_startAnchor;
 	setFlag(QGraphicsItem::ItemIsSelectable, true);
 	setPen(QPen(Qt::black, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 }
 
-QRectF Arrow::boundingRect() const
-{
-	qreal extra = (pen().width() + 20) / 2.0;
-
-	return QRectF(line().p1(), QSizeF(line().p2().x() - line().p1().x(), line().p2().y() - line().p1().y()))
-		.normalized()
-		.adjusted(-extra, -extra, extra, extra);
-}
-
-QPainterPath Arrow::shape() const
-{
-	QPainterPath path = QGraphicsLineItem::shape();
-	path.addPolygon(m_arrowHead);
-	return path;
-}
-
 void Arrow::updatePosition()
 {
-	QLineF line(mapFromItem(m_myStartItem, 0, 0), mapFromItem(m_myEndItem, 0, 0));
+	qDebug() << "scenepos is " << m_startAnchor->scenePos() << " " << m_endAnchor->scenePos();
+	QPointF startOffset = m_startAnchor->boundingRect().center();
+	QPointF endOffset	= m_endAnchor->boundingRect().center();
+	QLineF	line(m_startAnchor->scenePos() + startOffset, m_endAnchor->scenePos() + endOffset);
 	setLine(line);
-}
-
-void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-	Q_UNUSED(option)
-	Q_UNUSED(widget)
-	if (m_myStartItem->collidesWithItem(m_myEndItem))
-	{
-		return;
-	}
-
-	QPen myPen = pen();
-	myPen.setColor(Qt::black);
-	const qreal arrowSize = 20;
-	painter->setPen(myPen);
-	painter->setBrush(Qt::black);
-
-	QLineF	  centerLine(m_myStartItem->pos(), m_myEndItem->pos());
-	QPolygonF endPolygon = m_myEndItem->polygon();
-	QPointF	  p1		 = endPolygon.first() + m_myEndItem->pos();
-	QPointF	  intersectPoint;
-	for (int i = 1; i < endPolygon.count(); ++i)
-	{
-		QPointF						   p2(endPolygon.at(i) + m_myEndItem->pos());
-		const QLineF				   polyLine(p1, p2);
-		const QLineF::IntersectionType intersectionType(polyLine.intersects(centerLine, &intersectPoint));
-		if (intersectionType == QLineF::BoundedIntersection)
-		{
-			break;
-		}
-		p1 = p2;
-	}
-
-	setLine(QLineF(intersectPoint, m_myStartItem->pos()));
-
-	double angle = std::atan2(-line().dy(), line().dx());
-
-	QPointF arrowP1 = line().p1() + QPointF(sin(angle + M_PI / 3) * arrowSize, cos(angle + M_PI / 3) * arrowSize);
-	QPointF arrowP2
-		= line().p1() + QPointF(sin(angle + M_PI - M_PI / 3) * arrowSize, cos(angle + M_PI - M_PI / 3) * arrowSize);
-
-	m_arrowHead.clear();
-	m_arrowHead << line().p1() << arrowP1 << arrowP2;
-	painter->drawLine(line());
-	painter->drawPolygon(m_arrowHead);
-	if (isSelected())
-	{
-		painter->setPen(QPen(Qt::black, 1, Qt::DashLine));
-		QLineF myLine = line();
-		myLine.translate(0, 4.0);
-		painter->drawLine(myLine);
-		myLine.translate(0, -8.0);
-		painter->drawLine(myLine);
-	}
 }

@@ -38,23 +38,23 @@ public:
 		Type = UserType + 4
 	};
 
-	Arrow(TopologyItem *startItem, TopologyItem *endItem, QGraphicsItem *parent = nullptr);
+	Arrow(TopologyItem		   *startItem,
+		  TopologyItem		   *endItem,
+		  QGraphicsEllipseItem *startAnchor,
+		  QGraphicsEllipseItem *endAnchor,
+		  QGraphicsItem		   *parent = nullptr);
 
 	[[nodiscard]] int			type() const override { return Type; }
-	[[nodiscard]] QRectF		boundingRect() const override;
-	[[nodiscard]] QPainterPath	shape() const override;
-	[[nodiscard]] TopologyItem *startItem() const { return m_myStartItem; }
-	[[nodiscard]] TopologyItem *endItem() const { return m_myEndItem; }
+	[[nodiscard]] TopologyItem *startItem() const { return m_startItem; }
+	[[nodiscard]] TopologyItem *endItem() const { return m_endItem; }
 
 	void updatePosition();
 
-protected:
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
-
 private:
-	TopologyItem *m_myStartItem;
-	TopologyItem *m_myEndItem;
-	QPolygonF	  m_arrowHead;
+	TopologyItem		 *m_startItem;
+	TopologyItem		 *m_endItem;
+	QGraphicsEllipseItem *m_startAnchor;
+	QGraphicsEllipseItem *m_endAnchor;
 };
 
 #endif // ARROW_H

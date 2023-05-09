@@ -26,17 +26,20 @@
 #ifndef LAYOUTMANAGER_HPP_
 #define LAYOUTMANAGER_HPP_
 
+#include <QObject>
+
 #include "topology/TopologyWindow.hpp"
 #include "layout/LayoutWindow.hpp"
 
-class LayoutManager
+class LayoutManager : public QObject
 {
+	Q_OBJECT
 public:
-	LayoutManager();
-	virtual ~LayoutManager();
+	LayoutManager()			  = default;
+	~LayoutManager() override = default;
 
-	void setTopologyWindow(TopologyWindow *pTopologyWindow) { m_pTopologyWindow = pTopologyWindow; }
-	void setLayoutWindow(LayoutWindow *pLayoutWindow) { m_pLayoutWindow = pLayoutWindow; }
+	void setTopologyWindow(TopologyWindow *pTopologyWindow);
+	void setLayoutWindow(LayoutWindow *pLayoutWindow);
 
 	// Disable copy and move semantics by default
 	LayoutManager(const LayoutManager &)			= delete;
@@ -44,6 +47,10 @@ public:
 	LayoutManager &operator=(const LayoutManager &) = delete;
 	LayoutManager &operator=(LayoutManager &&)		= delete;
 
+private Q_SLOTS:
+	void topologySaved();
+
+private:
 	TopologyWindow *m_pTopologyWindow = nullptr;
 	LayoutWindow   *m_pLayoutWindow	  = nullptr;
 };

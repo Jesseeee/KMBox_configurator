@@ -51,6 +51,11 @@ class TopologyWindow : public QMainWindow
 public:
 	explicit TopologyWindow(QWidget *parent = nullptr);
 
+	std::vector<TopologyItem *> getAllTopologyItems() const;
+
+Q_SIGNALS:
+	void saveTopology();
+
 private slots:
 	void buttonGroupClicked(QAbstractButton *button);
 	void deleteItem();
@@ -69,8 +74,8 @@ private:
 	TopologyScene *scene = nullptr;
 	QGraphicsView *view	 = nullptr;
 
-	QAction *addAction	  = nullptr;
-	QAction *deleteAction = nullptr;
+	QAction *saveTopologyAction = nullptr;
+	QAction *deleteAction		= nullptr;
 
 	QAction *toFrontAction	= nullptr;
 	QAction *sendBackAction = nullptr;

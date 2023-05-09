@@ -26,6 +26,18 @@
 
 #include "LayoutManager.hpp"
 
-LayoutManager::LayoutManager() {}
+void LayoutManager::setTopologyWindow(TopologyWindow *pTopologyWindow)
+{
+	m_pTopologyWindow = pTopologyWindow;
+	QObject::connect(m_pTopologyWindow, &TopologyWindow::saveTopology, this, &LayoutManager::topologySaved);
+}
+void LayoutManager::setLayoutWindow(LayoutWindow *pLayoutWindow)
+{
+	m_pLayoutWindow = pLayoutWindow;
+}
 
-LayoutManager::~LayoutManager() {}
+void LayoutManager::topologySaved()
+{
+	auto items = m_pTopologyWindow->getAllTopologyItems();
+	// TODO - Parse this as a sort of logical tree and set the allowed screens in the layoutwindow
+}

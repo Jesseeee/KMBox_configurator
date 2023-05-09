@@ -35,16 +35,6 @@ TopologyScene::TopologyScene(QObject *parent)
 {
 }
 
-void TopologyScene::setMode(Mode mode)
-{
-	m_myMode = mode;
-}
-
-void TopologyScene::setItemType(TopologyItem::TopologyType type)
-{
-	m_myItemType = type;
-}
-
 void TopologyScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	if (mouseEvent->button() != Qt::LeftButton)
@@ -63,6 +53,7 @@ void TopologyScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 			break;
 		case Mode::InsertLine:
 			m_line = new QGraphicsLineItem(QLineF(mouseEvent->scenePos(), mouseEvent->scenePos()));
+			qDebug() << "Insert line at " << QLineF(mouseEvent->scenePos(), mouseEvent->scenePos());
 			m_line->setPen(QPen(Qt::black, 2));
 			addItem(m_line);
 			break;
@@ -102,14 +93,17 @@ void TopologyScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		removeItem(m_line);
 		delete m_line;
 
-		if (!startItems.empty() && !endItems.empty() && startItems.first()->type() == TopologyItem::Type
-			&& endItems.first()->type() == TopologyItem::Type && startItems.first() != endItems.first())
+		if (!startItems.empty() && !endItems.empty() /*&& startItems.first()->type() == TopologyItem::Type
+			&& endItems.first()->type() == TopologyItem::Type */
+			&& startItems.first() != endItems.first())
 		{
-			TopologyItem *startItem = qgraphicsitem_cast<TopologyItem *>(startItems.first());
-			TopologyItem *endItem	= qgraphicsitem_cast<TopologyItem *>(endItems.first());
-			auto		 *arrow		= new Arrow(startItem, endItem);
-			startItem->addArrow(arrow);
-			endItem->addArrow(arrow);
+			QGraphicsEllipseItem *startItem			= qgraphicsitem_cast<QGraphicsEllipseItem *>(startItems.first());
+			QGraphicsEllipseItem *endItem			= qgraphicsitem_cast<QGraphicsEllipseItem *>(endItems.first());
+			TopologyItem		 *startTopologyItem = qgraphicsitem_cast<TopologyItem *>(startItem->parentItem());
+			TopologyItem		 *endTopologyItem	= qgraphicsitem_cast<TopologyItem *>(endItem->parentItem());
+			auto				 *arrow				= new Arrow(startTopologyItem, endTopologyItem, startItem, endItem);
+			startTopologyItem->addArrow(arrow);
+			endTopologyItem->addArrow(arrow);
 			arrow->setZValue(-1000.0);
 			addItem(arrow);
 			arrow->updatePosition();
@@ -123,5 +117,5 @@ bool TopologyScene::isItemChange(int type) const
 {
 	const QList<QGraphicsItem *> items = selectedItems();
 	const auto					 cb	   = [type](const QGraphicsItem *item) { return item->type() == type; };
-	return std::find_if(items.begin(), items.end(), cb) != items.end();
+	return std::ranges::find_if(items, cb) != items.end();
 }

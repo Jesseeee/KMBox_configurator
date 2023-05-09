@@ -50,8 +50,8 @@ public:
 	explicit TopologyScene(QObject *parent = nullptr);
 
 public slots:
-	void setMode(Mode mode);
-	void setItemType(TopologyItem::TopologyType type);
+	void setMode(Mode mode) { m_myMode = mode; };
+	void setItemType(TopologyItem::TopologyType type) { m_myItemType = type; };
 
 signals:
 	void itemInserted(TopologyItem *item);
