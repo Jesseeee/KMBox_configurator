@@ -53,7 +53,6 @@ void TopologyScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 			break;
 		case Mode::InsertLine:
 			m_line = new QGraphicsLineItem(QLineF(mouseEvent->scenePos(), mouseEvent->scenePos()));
-			qDebug() << "Insert line at " << QLineF(mouseEvent->scenePos(), mouseEvent->scenePos());
 			m_line->setPen(QPen(Qt::black, 2));
 			addItem(m_line);
 			break;
@@ -93,20 +92,21 @@ void TopologyScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		removeItem(m_line);
 		delete m_line;
 
-		if (!startItems.empty() && !endItems.empty() /*&& startItems.first()->type() == TopologyItem::Type
-			&& endItems.first()->type() == TopologyItem::Type */
-			&& startItems.first() != endItems.first())
+		if (!startItems.empty() && !endItems.empty() && startItems.first() != endItems.first())
 		{
-			QGraphicsEllipseItem *startItem			= qgraphicsitem_cast<QGraphicsEllipseItem *>(startItems.first());
-			QGraphicsEllipseItem *endItem			= qgraphicsitem_cast<QGraphicsEllipseItem *>(endItems.first());
-			TopologyItem		 *startTopologyItem = qgraphicsitem_cast<TopologyItem *>(startItem->parentItem());
-			TopologyItem		 *endTopologyItem	= qgraphicsitem_cast<TopologyItem *>(endItem->parentItem());
-			auto				 *arrow				= new Arrow(startTopologyItem, endTopologyItem, startItem, endItem);
-			startTopologyItem->addArrow(arrow);
-			endTopologyItem->addArrow(arrow);
-			arrow->setZValue(-1000.0);
-			addItem(arrow);
-			arrow->updatePosition();
+			QGraphicsEllipseItem *startItem = qgraphicsitem_cast<QGraphicsEllipseItem *>(startItems.first());
+			QGraphicsEllipseItem *endItem	= qgraphicsitem_cast<QGraphicsEllipseItem *>(endItems.first());
+			if (startItem && endItem)
+			{
+				TopologyItem *startTopologyItem = qgraphicsitem_cast<TopologyItem *>(startItem->parentItem());
+				TopologyItem *endTopologyItem	= qgraphicsitem_cast<TopologyItem *>(endItem->parentItem());
+				auto		 *arrow				= new Arrow(startTopologyItem, endTopologyItem, startItem, endItem);
+				startTopologyItem->addArrow(arrow);
+				endTopologyItem->addArrow(arrow);
+				arrow->setZValue(-1000.0);
+				addItem(arrow);
+				arrow->updatePosition();
+			}
 		}
 	}
 	m_line = nullptr;

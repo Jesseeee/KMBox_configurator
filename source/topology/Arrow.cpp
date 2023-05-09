@@ -42,14 +42,12 @@ Arrow::Arrow(TopologyItem		  *startItem,
 	, m_startAnchor(startAnchor)
 	, m_endAnchor(endAnchor)
 {
-	qDebug() << "Start and end anchor ptr val is " << m_startAnchor;
 	setFlag(QGraphicsItem::ItemIsSelectable, true);
 	setPen(QPen(Qt::black, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 }
 
 void Arrow::updatePosition()
 {
-	qDebug() << "scenepos is " << m_startAnchor->scenePos() << " " << m_endAnchor->scenePos();
 	QPointF startOffset = m_startAnchor->boundingRect().center();
 	QPointF endOffset	= m_endAnchor->boundingRect().center();
 	QLineF	line(m_startAnchor->scenePos() + startOffset, m_endAnchor->scenePos() + endOffset);
