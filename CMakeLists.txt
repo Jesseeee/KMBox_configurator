@@ -26,6 +26,8 @@ set(PROJECT_SOURCES
     source/main.cpp
 	source/TabWindow.cpp
 	source/TabWindow.hpp
+	source/LayoutManager.cpp
+	source/LayoutManager.hpp
 	source/topology/TopologyWindow.cpp
     source/topology/TopologyWindow.hpp
 	source/topology/Arrow.cpp
@@ -51,6 +53,10 @@ target_link_libraries(KMBox_configurator PRIVATE
     Qt6::Core
 	Qt6::Gui
     Qt6::Widgets
+)
+
+target_include_directories(KMBox_configurator PRIVATE
+	"C:\\Qt\\Tools\\mingw1120_64\\lib\\gcc\\x86_64-w64-mingw32\\11.2.0\\include\\c++\\bits"
 )
 
 qt_add_resources(KMBox_configurator "configurator"

@@ -1,5 +1,5 @@
 /**
- * @file TabWindow.hpp
+ * @file LayoutManager.hpp
  *
  * @brief TODO
  *
@@ -21,37 +21,31 @@
  * - <!--notes-->
  *
  * <H3>Author</H3>
- * - May 04, 2023 ; jesvan
+ * - May 08, 2023 ; jesvan
  */
-#ifndef TABWINDOW_HPP_
-#define TABWINDOW_HPP_
+#ifndef LAYOUTMANAGER_HPP_
+#define LAYOUTMANAGER_HPP_
 
-#include <QtWidgets/QMainWindow>
+#include "topology/TopologyWindow.hpp"
+#include "layout/LayoutWindow.hpp"
 
-class LayoutManager;
-
-class TabWindow : public QMainWindow
+class LayoutManager
 {
 public:
-	explicit TabWindow(LayoutManager *layoutManager, QWidget *parent = nullptr);
+	LayoutManager();
+	virtual ~LayoutManager();
+
+	void setTopologyWindow(TopologyWindow *pTopologyWindow) { m_pTopologyWindow = pTopologyWindow; }
+	void setLayoutWindow(LayoutWindow *pLayoutWindow) { m_pLayoutWindow = pLayoutWindow; }
 
 	// Disable copy and move semantics by default
-	TabWindow(const TabWindow &)			= delete;
-	TabWindow(TabWindow &&)					= delete;
-	TabWindow &operator=(const TabWindow &) = delete;
-	TabWindow &operator=(TabWindow &&)		= delete;
+	LayoutManager(const LayoutManager &)			= delete;
+	LayoutManager(LayoutManager &&)					= delete;
+	LayoutManager &operator=(const LayoutManager &) = delete;
+	LayoutManager &operator=(LayoutManager &&)		= delete;
 
-private Q_SLOTS:
-	void about();
-
-private:
-	QTabWidget *tabWidget = nullptr;
-
-	QMenu *fileMenu	 = nullptr;
-	QMenu *aboutMenu = nullptr;
-
-	QAction *exitAction	 = nullptr;
-	QAction *aboutAction = nullptr;
+	TopologyWindow *m_pTopologyWindow = nullptr;
+	LayoutWindow   *m_pLayoutWindow	  = nullptr;
 };
 
 #endif

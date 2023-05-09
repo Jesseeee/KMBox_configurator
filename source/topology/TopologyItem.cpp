@@ -58,6 +58,20 @@ TopologyItem::TopologyItem(TopologyType diagramType, QGraphicsItem *parent)
 	setFlag(QGraphicsItem::ItemIsMovable, true);
 	setFlag(QGraphicsItem::ItemIsSelectable, true);
 	setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
+
+	// Create four anchor points in the corners of the pixmap
+	// TODO - needs to be adjusted per different topology item
+	const qreal	  anchorSize = 10;
+	const QPointF topLeftAnchor(0, 0);
+	const QPointF topRightAnchor(m_myPixMap.width() - anchorSize, 0);
+	const QPointF bottomLeftAnchor(0, m_myPixMap.height() - anchorSize);
+	const QPointF bottomRightAnchor(m_myPixMap.width() - anchorSize, m_myPixMap.height() - anchorSize);
+
+	m_anchors.reserve(4);
+	m_anchors.push_back(createAnchor(topLeftAnchor, anchorSize));
+	m_anchors.push_back(createAnchor(topRightAnchor, anchorSize));
+	m_anchors.push_back(createAnchor(bottomLeftAnchor, anchorSize));
+	m_anchors.push_back(createAnchor(bottomRightAnchor, anchorSize));
 }
 
 void TopologyItem::removeArrow(Arrow *arrow)
@@ -112,4 +126,26 @@ QVariant TopologyItem::itemChange(GraphicsItemChange change, const QVariant &val
 	}
 
 	return value;
+}
+
+void TopologyItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+	// Paint the pixmap as usual
+	QGraphicsPixmapItem::paint(painter, option, widget);
+
+	// Paint the anchor points
+	for (QGraphicsEllipseItem *anchor : m_anchors)
+	{
+		anchor->paint(painter, option, widget);
+	}
+}
+
+QGraphicsEllipseItem *TopologyItem::createAnchor(const QPointF &pos, qreal size)
+{
+	QGraphicsEllipseItem *anchor = new QGraphicsEllipseItem(QRectF(pos, QSizeF(size, size)), this);
+	anchor->setPen(QPen(Qt::black, 1));
+	anchor->setBrush(QBrush(Qt::red));
+	anchor->setFlag(QGraphicsItem::ItemIsMovable, true);
+	anchor->setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
+	return anchor;
 }

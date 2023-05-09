@@ -53,22 +53,26 @@ public:
 
 	TopologyItem(TopologyType diagramType, QGraphicsItem *parent = nullptr);
 
-	void		 removeArrow(Arrow *arrow);
-	void		 removeArrows();
+	void					   removeArrow(Arrow *arrow);
+	void					   removeArrows();
 	[[nodiscard]] TopologyType diagramType() const { return m_myDiagramType; }
-	[[nodiscard]] QPolygonF polygon() const { return m_myPolygon; }
-	void		 addArrow(Arrow *arrow);
-	[[nodiscard]] QPixmap image() const;
-	[[nodiscard]] int type() const override { return Type; }
+	[[nodiscard]] QPolygonF	   polygon() const { return m_myPolygon; }
+	void					   addArrow(Arrow *arrow);
+	[[nodiscard]] QPixmap	   image() const;
+	[[nodiscard]] int		   type() const override { return Type; }
 
 protected:
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+	void	 paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 
 private:
-	TopologyType   m_myDiagramType;
-	QPolygonF	   m_myPolygon;
-	QList<Arrow *> m_arrows;
-	QPixmap		   m_myPixMap;
+	QGraphicsEllipseItem *createAnchor(const QPointF &pos, qreal size);
+
+	TopologyType						m_myDiagramType;
+	QPolygonF							m_myPolygon;
+	QList<Arrow *>						m_arrows;
+	QPixmap								m_myPixMap;
+	std::vector<QGraphicsEllipseItem *> m_anchors;
 };
 
 #endif // DIAGRAMITEM_H

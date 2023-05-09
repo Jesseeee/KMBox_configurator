@@ -2,6 +2,7 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "TabWindow.hpp"
+#include "LayoutManager.hpp"
 
 int main(int argv, char *args[])
 {
@@ -9,7 +10,8 @@ int main(int argv, char *args[])
 
 	const QApplication app(argv, args);
 
-	TabWindow tabWindow;
+	LayoutManager *pLayoutManager = new LayoutManager();
+	TabWindow	   tabWindow(pLayoutManager);
 	tabWindow.show();
 
 	return QApplication::exec();

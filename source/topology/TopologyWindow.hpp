@@ -61,10 +61,10 @@ private slots:
 	void sceneScaleChanged(const QString &scale);
 
 private:
-	void	 createToolBox();
-	void	 createActions();
-	void	 createToolbars();
-	QWidget *createCellWidget(const QString &text, TopologyItem::TopologyType type);
+	void				   createToolBox();
+	void				   createActions();
+	void				   createToolbars();
+	[[nodiscard]] QWidget *createCellWidget(const QString &text, TopologyItem::TopologyType type);
 
 	TopologyScene *scene = nullptr;
 	QGraphicsView *view	 = nullptr;

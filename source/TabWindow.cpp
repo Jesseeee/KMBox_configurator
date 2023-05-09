@@ -29,15 +29,23 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QMessageBox>
+#include "LayoutManager.hpp"
 #include "topology/TopologyWindow.hpp"
 #include "layout/LayoutWindow.hpp"
 
-TabWindow::TabWindow(QWidget *parent)
+TabWindow::TabWindow(LayoutManager *layoutManager, QWidget *parent)
 	: QMainWindow(parent)
 {
-	tabWidget = new QTabWidget;
-	tabWidget->addTab(new TopologyWindow(this), tr("Topology"));
-	tabWidget->addTab(new LayoutWindow(this), tr("Layout"));
+	tabWidget = new QTabWidget(this);
+
+	auto *topologyWindow = new TopologyWindow(this);
+	auto *layoutWindow	 = new LayoutWindow(this);
+
+	tabWidget->addTab(topologyWindow, tr("Topology"));
+	tabWidget->addTab(layoutWindow, tr("Layout"));
+
+	layoutManager->setLayoutWindow(layoutWindow);
+	layoutManager->setTopologyWindow(topologyWindow);
 
 	auto *mainLayout = new QVBoxLayout;
 	mainLayout->addWidget(tabWidget);

@@ -51,15 +51,10 @@
 	"C_Cpp.autoAddFileAssociations": false,
 	"C_Cpp.autocompleteAddParentheses": true,
 	"C_Cpp.default.compileCommands": "${workspaceFolder}/build/compile_commands.json",
-	"C_Cpp.codeAnalysis.clangTidy.useBuildPath": true,
-	"C_Cpp.codeAnalysis.clangTidy.args": [
-		"--config-file=${workspaceFolder}/.vscode/clang-tidy"
-	],
 	"C_Cpp.inlayHints.autoDeclarationTypes.enabled": true,
 	"C_Cpp.inlayHints.autoDeclarationTypes.showOnLeft": true,
 	"C_Cpp.inlayHints.parameterNames.enabled": true,
 	"C_Cpp.inlayHints.referenceOperator.enabled": true,
-	"C_Cpp.codeAnalysis.clangTidy.enabled": true,
 	"doxdocgen.generic.splitCasingSmartText": false,
 	"doxdocgen.cpp.ctorText": "Class {name} constructor",
 	"doxdocgen.cpp.dtorText": "Class {name} destructor",
