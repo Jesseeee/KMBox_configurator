@@ -128,6 +128,22 @@ QVariant TopologyItem::itemChange(GraphicsItemChange change, const QVariant &val
 	return value;
 }
 
+void TopologyItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+	QGraphicsItem		 *clickedItem	= scene()->itemAt(event->scenePos(), QTransform());
+	QGraphicsEllipseItem *clickedAnchor = qgraphicsitem_cast<QGraphicsEllipseItem *>(clickedItem);
+
+	// TODO add handling for when an anchor is clicked to draw arrows
+	// The user clicked outside an anchor point, handle the event as usual
+	QGraphicsPixmapItem::mousePressEvent(event);
+}
+
+void TopologyItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+	// TODO - add this handling for now pass it
+	QGraphicsPixmapItem::mouseReleaseEvent(event);
+}
+
 void TopologyItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 	// Paint the pixmap as usual
