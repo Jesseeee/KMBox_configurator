@@ -47,8 +47,20 @@ public:
 	};
 	enum class TopologyType
 	{
+		KMBox,
 		Server,
 		Display
+	};
+
+	struct anchorPoint
+	{
+		anchorPoint(std::string name, QGraphicsEllipseItem *anchor)
+			: m_name(name)
+			, m_anchor(anchor)
+		{
+		}
+		std::string			  m_name;
+		QGraphicsEllipseItem *m_anchor;
 	};
 
 	TopologyItem(TopologyType diagramType, QGraphicsItem *parent = nullptr);
@@ -67,10 +79,10 @@ protected:
 private:
 	QGraphicsEllipseItem *createAnchor(const QPointF &pos);
 
-	TopologyType						m_myDiagramType;
-	QList<Arrow *>						m_arrows;
-	QPixmap								m_myPixMap;
-	std::vector<QGraphicsEllipseItem *> m_anchors;
+	TopologyType			 m_myDiagramType;
+	QList<Arrow *>			 m_arrows;
+	QPixmap					 m_myPixMap;
+	std::vector<anchorPoint> m_anchors;
 };
 
 #endif // DIAGRAMITEM_H

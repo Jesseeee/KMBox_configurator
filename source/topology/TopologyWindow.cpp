@@ -69,6 +69,20 @@ std::vector<TopologyItem *> TopologyWindow::getAllTopologyItems() const
 	return topologyItems;
 }
 
+std::vector<Arrow *> TopologyWindow::getAllArrows() const
+{
+	std::vector<Arrow *> arrows;
+	for (QGraphicsItem *item : scene->items())
+	{
+		Arrow *arrow = qgraphicsitem_cast<Arrow *>(item);
+		if (arrow)
+		{
+			arrows.push_back(arrow);
+		}
+	}
+	return arrows;
+}
+
 void TopologyWindow::buttonGroupClicked(QAbstractButton *button)
 {
 	for (const QAbstractButton *myButton : buttonGroup->buttons())
@@ -178,8 +192,9 @@ void TopologyWindow::createToolBox()
 			this,
 			&TopologyWindow::buttonGroupClicked);
 	auto *layout = new QGridLayout;
-	layout->addWidget(createCellWidget(tr("Server"), TopologyItem::TopologyType::Server), 0, 0);
-	layout->addWidget(createCellWidget(tr("Display"), TopologyItem::TopologyType::Display), 1, 0);
+	layout->addWidget(createCellWidget(tr("KMBox"), TopologyItem::TopologyType::KMBox), 0, 0);
+	layout->addWidget(createCellWidget(tr("Server"), TopologyItem::TopologyType::Server), 1, 0);
+	layout->addWidget(createCellWidget(tr("Display"), TopologyItem::TopologyType::Display), 2, 0);
 	layout->setRowStretch(3, 10);
 	layout->setColumnStretch(2, 10);
 

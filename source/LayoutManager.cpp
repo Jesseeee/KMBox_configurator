@@ -38,6 +38,9 @@ void LayoutManager::setLayoutWindow(LayoutWindow *pLayoutWindow)
 
 void LayoutManager::topologySaved()
 {
-	auto items = m_pTopologyWindow->getAllTopologyItems();
+	std::vector<TopologyItem *> items  = m_pTopologyWindow->getAllTopologyItems();
+	std::vector<Arrow *>		arrows = m_pTopologyWindow->getAllArrows();
+	qDebug() << "Arrows size is " << arrows.size();
+
 	// TODO - Parse this as a sort of logical tree and set the allowed screens in the layoutwindow
 }

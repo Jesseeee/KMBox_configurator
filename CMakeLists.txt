@@ -72,6 +72,7 @@ qt_add_resources(KMBox_configurator "configurator"
 		"images/sendtoback.png"
 		"images/server.png"
 		"images/display.png"
+		"images/KMBox.png"
 )
 
 install(TARGETS KMBox_configurator

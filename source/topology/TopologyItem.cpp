@@ -41,6 +41,9 @@ TopologyItem::TopologyItem(TopologyType diagramType, QGraphicsItem *parent)
 	// We still create the polygon as it's abused for line drawing
 	switch (m_myDiagramType)
 	{
+		case TopologyType::KMBox:
+			m_myPixMap.load(":/images/KMBox.png");
+			break;
 		case TopologyType::Server:
 			m_myPixMap.load(":/images/server.png");
 			m_myPixMap = m_myPixMap.scaled(125, 125);
@@ -58,16 +61,36 @@ TopologyItem::TopologyItem(TopologyType diagramType, QGraphicsItem *parent)
 
 	// Create four anchor points in the corners of the pixmap
 	// TODO - needs to be adjusted per different topology item
-	const QPointF topLeftAnchor(0, 0);
-	const QPointF topRightAnchor(m_myPixMap.width() - ANCHOR_SIZE, 0);
-	const QPointF bottomLeftAnchor(0, m_myPixMap.height() - ANCHOR_SIZE);
-	const QPointF bottomRightAnchor(m_myPixMap.width() - ANCHOR_SIZE, m_myPixMap.height() - ANCHOR_SIZE);
+	if (m_myDiagramType == TopologyType::KMBox)
+	{
+		const QPointF USB1Anchor(m_myPixMap.width() / 6 * 1 - ANCHOR_SIZE / 2, m_myPixMap.height() - ANCHOR_SIZE);
+		const QPointF USB2Anchor(m_myPixMap.width() / 6 * 2 - ANCHOR_SIZE / 2, m_myPixMap.height() - ANCHOR_SIZE);
+		const QPointF USB3Anchor(m_myPixMap.width() / 6 * 3 - ANCHOR_SIZE / 2, m_myPixMap.height() - ANCHOR_SIZE);
+		const QPointF USB4Anchor(m_myPixMap.width() / 6 * 4 - ANCHOR_SIZE / 2, m_myPixMap.height() - ANCHOR_SIZE);
+		const QPointF USB5Anchor(m_myPixMap.width() / 6 * 5 - ANCHOR_SIZE / 2, m_myPixMap.height() - ANCHOR_SIZE);
+		m_anchors.emplace_back("usb1", createAnchor(USB1Anchor));
+		m_anchors.emplace_back("usb2", createAnchor(USB2Anchor));
+		m_anchors.emplace_back("usb3", createAnchor(USB3Anchor));
+		m_anchors.emplace_back("usb4", createAnchor(USB4Anchor));
+		m_anchors.emplace_back("usb5", createAnchor(USB5Anchor));
+	}
+	else if (m_myDiagramType == TopologyType::Display)
+	{
+		const QPointF topMiddleAnchor(m_myPixMap.width() / 2 - ANCHOR_SIZE, 0);
+		m_anchors.emplace_back("VideoIn", createAnchor(topMiddleAnchor));
+	}
+	else if (m_myDiagramType == TopologyType::Server)
+	{
+		const QPointF topMiddleAnchor(m_myPixMap.width() / 2 - ANCHOR_SIZE, 0);
+		const QPointF topBottomAnchor(m_myPixMap.width() / 2 - ANCHOR_SIZE, m_myPixMap.height() - ANCHOR_SIZE);
 
-	m_anchors.reserve(4);
-	m_anchors.push_back(createAnchor(topLeftAnchor));
-	m_anchors.push_back(createAnchor(topRightAnchor));
-	m_anchors.push_back(createAnchor(bottomLeftAnchor));
-	m_anchors.push_back(createAnchor(bottomRightAnchor));
+		m_anchors.emplace_back("VideoOut", createAnchor(topMiddleAnchor));
+		m_anchors.emplace_back("USB-B", createAnchor(topBottomAnchor));
+	}
+	else
+	{
+		qDebug() << "Can't create anchors for unknown type";
+	}
 }
 
 void TopologyItem::removeArrow(Arrow *arrow)
@@ -113,7 +136,7 @@ void TopologyItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	QGraphicsPixmapItem::paint(painter, option, widget);
 
 	// Paint the anchor points
-	for (QGraphicsEllipseItem *anchor : m_anchors)
+	for (const auto &[name, anchor] : m_anchors)
 	{
 		anchor->paint(painter, option, widget);
 	}

@@ -26,7 +26,7 @@
 
 #include "ResizeableRectItem.hpp"
 
-static const int32_t	 HANDLE_RECT_SIZE	  = 8;
+static const int32_t	 HANDLE_RECT_SIZE	  = 20;
 static constexpr int32_t HANDLE_RECT_HALFSIZE = HANDLE_RECT_SIZE / 2;
 
 ResizeableRectItem::ResizeableRectItem(QGraphicsItem *parent)
@@ -101,6 +101,11 @@ void ResizeableRectItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 				break;
 		}
 		setRect(rect);
+		for (QGraphicsItem *item : childItems())
+		{
+			QPointF newPos = boundingRect().center() - item->boundingRect().center();
+			item->setPos(newPos);
+		}
 	}
 	else
 	{

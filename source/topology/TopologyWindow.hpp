@@ -52,6 +52,7 @@ public:
 	explicit TopologyWindow(QWidget *parent = nullptr);
 
 	std::vector<TopologyItem *> getAllTopologyItems() const;
+	std::vector<Arrow *>		getAllArrows() const;
 
 Q_SIGNALS:
 	void saveTopology();
