@@ -28,8 +28,11 @@
 
 #include <QMainWindow>
 
+#include <vector>
+
 class LayoutScene;
 class QGraphicsView;
+class QGraphicsItem;
 
 class LayoutWindow : public QMainWindow
 {
@@ -38,15 +41,24 @@ public:
 	explicit LayoutWindow(QWidget *parent = nullptr);
 	~LayoutWindow() override;
 
+	std::vector<QGraphicsItem *> getAllItems() const;
+
 	// Disable copy and move semantics by default
 	LayoutWindow(const LayoutWindow &)			  = delete;
 	LayoutWindow(LayoutWindow &&)				  = delete;
 	LayoutWindow &operator=(const LayoutWindow &) = delete;
 	LayoutWindow &operator=(LayoutWindow &&)	  = delete;
 
+Q_SIGNALS:
+	void saveLayout();
+
 private:
 	LayoutScene	  *scene = nullptr;
 	QGraphicsView *view	 = nullptr;
+
+	QAction *saveLayoutAction = nullptr;
+
+	QToolBar *editToolBar = nullptr;
 };
 
 #endif

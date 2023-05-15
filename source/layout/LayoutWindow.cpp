@@ -31,6 +31,7 @@
 
 #include <QHBoxLayout>
 #include <QGraphicsView>
+#include <QToolBar>
 
 LayoutWindow::LayoutWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -58,6 +59,14 @@ LayoutWindow::LayoutWindow(QWidget *parent)
 	setUnifiedTitleAndToolBarOnMac(true);
 
 	setGeometry(100, 100, 800, 500);
+
+	saveLayoutAction = new QAction(QIcon(":/images/save.png"), tr("Save the layouts"), this);
+	saveLayoutAction->setShortcut(tr("Ctrl+Enter"));
+	saveLayoutAction->setStatusTip(tr("Save the topology so it can be used in the layout"));
+	connect(saveLayoutAction, &QAction::triggered, this, &LayoutWindow::saveLayout);
+
+	editToolBar = addToolBar(tr("Edit"));
+	editToolBar->addAction(saveLayoutAction);
 
 	// TODO - remove later, this is for proof of concept, which works!
 	auto *rectItem = new ResizeableRectItem;
@@ -89,3 +98,9 @@ LayoutWindow::LayoutWindow(QWidget *parent)
 }
 
 LayoutWindow::~LayoutWindow() {}
+
+std::vector<QGraphicsItem *> LayoutWindow::getAllItems() const
+{
+	QList<QGraphicsItem *> items = scene->items();
+	return std::vector<QGraphicsItem *>(items.begin(), items.end());
+}

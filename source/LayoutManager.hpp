@@ -49,6 +49,7 @@ public:
 
 private Q_SLOTS:
 	void topologySaved();
+	void layoutSaved();
 
 private:
 	TopologyWindow *m_pTopologyWindow = nullptr;

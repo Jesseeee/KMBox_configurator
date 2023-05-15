@@ -26,6 +26,8 @@
 
 #include "LayoutManager.hpp"
 
+#include "layout/ResizeableRectItem.hpp"
+
 void LayoutManager::setTopologyWindow(TopologyWindow *pTopologyWindow)
 {
 	m_pTopologyWindow = pTopologyWindow;
@@ -34,6 +36,7 @@ void LayoutManager::setTopologyWindow(TopologyWindow *pTopologyWindow)
 void LayoutManager::setLayoutWindow(LayoutWindow *pLayoutWindow)
 {
 	m_pLayoutWindow = pLayoutWindow;
+	QObject::connect(m_pLayoutWindow, &LayoutWindow::saveLayout, [this]() { layoutSaved(); });
 }
 
 void LayoutManager::topologySaved()
@@ -43,4 +46,21 @@ void LayoutManager::topologySaved()
 	qDebug() << "Arrows size is " << arrows.size();
 
 	// TODO - Parse this as a sort of logical tree and set the allowed screens in the layoutwindow
+}
+
+void LayoutManager::layoutSaved()
+{
+	// TODO - on layout save execute configuration creation
+	std::vector<QGraphicsItem *>	  itemList = m_pLayoutWindow->getAllItems();
+	std::vector<ResizeableRectItem *> rectItemList;
+
+	for (QGraphicsItem *item : itemList)
+	{
+		ResizeableRectItem *rectItem = dynamic_cast<ResizeableRectItem *>(item);
+		if (rectItem != nullptr)
+		{
+			rectItemList.push_back(rectItem);
+		}
+	}
+	qDebug() << "rect items " << rectItemList.size();
 }
