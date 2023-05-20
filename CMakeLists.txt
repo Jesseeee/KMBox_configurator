@@ -32,6 +32,8 @@ set(PROJECT_SOURCES
     source/topology/TopologyWindow.hpp
 	source/topology/Arrow.cpp
 	source/topology/Arrow.hpp
+	source/topology/ItemDetailWidget.cpp
+	source/topology/ItemDetailWidget.hpp
 	source/topology/TopologyItem.cpp
 	source/topology/TopologyItem.hpp
 	source/topology/TopologyScene.cpp

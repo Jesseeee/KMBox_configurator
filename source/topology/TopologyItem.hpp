@@ -71,6 +71,10 @@ public:
 	void					   addArrow(Arrow *arrow);
 	[[nodiscard]] int		   type() const override { return Type; }
 
+	std::map<std::string, std::string> getAttributes() const { return m_attributes; }
+
+	void setAttributeValue(const std::string &key, const std::string &value) { m_attributes[key] = value; }
+
 protected:
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
@@ -79,10 +83,11 @@ protected:
 private:
 	QGraphicsEllipseItem *createAnchor(const QPointF &pos);
 
-	TopologyType			 m_myDiagramType;
-	QList<Arrow *>			 m_arrows;
-	QPixmap					 m_myPixMap;
-	std::vector<anchorPoint> m_anchors;
+	TopologyType					   m_myDiagramType;
+	QList<Arrow *>					   m_arrows;
+	QPixmap							   m_myPixMap;
+	std::vector<anchorPoint>		   m_anchors;
+	std::map<std::string, std::string> m_attributes;
 };
 
 #endif // DIAGRAMITEM_H

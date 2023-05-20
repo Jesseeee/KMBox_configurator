@@ -28,6 +28,7 @@
 #include "TopologyItem.hpp"
 #include "TopologyScene.hpp"
 #include "TopologyWindow.hpp"
+#include "ItemDetailWidget.hpp"
 
 #include <QtWidgets>
 
@@ -37,7 +38,22 @@ TopologyWindow::TopologyWindow(QWidget *parent)
 	createActions();
 	createToolBox();
 
+	// create the details widget - TODO - custom widget for values
+	// m_detailsWidget = new ItemDetailsWidget();
+	// create the dock widget
+	m_detailsDockWidget = new QDockWidget(tr("Item Details"));
+	// set the dock widget properties
+	m_detailsDockWidget->setAllowedAreas(Qt::RightDockWidgetArea);
+	m_detailsDockWidget->setWidget(new QWidget(this));
+	m_detailsDockWidget->setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable);
+	m_detailsDockWidget->hide();
+	m_detailsDockWidget->setMinimumWidth(150);
+	// m_detailsDockWidget->setMinimumHeight(centralWidget()->height());
+	addDockWidget(Qt::RightDockWidgetArea, m_detailsDockWidget);
+	m_detailsDockWidget->show();
+
 	scene = new TopologyScene(this);
+	QObject::connect(scene, &TopologyScene::itemClicked, this, &TopologyWindow::itemClicked);
 	scene->setSceneRect(QRectF(0, 0, 5000, 5000));
 	connect(scene, &TopologyScene::itemInserted, this, &TopologyWindow::itemInserted);
 	createToolbars();
@@ -46,6 +62,8 @@ TopologyWindow::TopologyWindow(QWidget *parent)
 	layout->addWidget(toolBox);
 	view = new QGraphicsView(scene);
 	layout->addWidget(view);
+
+	layout->addWidget(m_detailsDockWidget);
 
 	auto *widget = new QWidget;
 	widget->setLayout(layout);
@@ -172,6 +190,26 @@ void TopologyWindow::itemInserted(TopologyItem *item)
 	pointerTypeGroup->button(int(TopologyScene::Mode::MoveItem))->setChecked(true);
 	scene->setMode(TopologyScene::Mode(pointerTypeGroup->checkedId()));
 	buttonGroup->button(int(item->diagramType()))->setChecked(false);
+}
+
+void TopologyWindow::itemClicked(TopologyItem *item, std::map<std::string, std::string> attributes)
+{
+	if (m_detailsDockWidget)
+	{
+		delete m_detailsDockWidget;
+	}
+	// create the details widget
+	ItemDetailWidget *detailsWidget = new ItemDetailWidget();
+	detailsWidget->setFields(item, attributes);
+
+	// create the dock widget and add it to the layout
+	m_detailsDockWidget = new QDockWidget(tr("Item Details"), this);
+	m_detailsDockWidget->setAllowedAreas(Qt::RightDockWidgetArea);
+	m_detailsDockWidget->setWidget(detailsWidget);
+	m_detailsDockWidget->setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable);
+	m_detailsDockWidget->setMinimumWidth(150);
+	m_detailsDockWidget->show();
+	centralWidget()->layout()->addWidget(m_detailsDockWidget);
 }
 
 void TopologyWindow::sceneScaleChanged(const QString &scale)

@@ -55,6 +55,7 @@ public slots:
 
 signals:
 	void itemInserted(TopologyItem *item);
+	void itemClicked(TopologyItem *item, std::map<std::string, std::string> attributes);
 
 protected:
 	void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;

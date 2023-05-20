@@ -59,6 +59,14 @@ void TopologyScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		default:;
 	}
 	QGraphicsScene::mousePressEvent(mouseEvent);
+	if (mouseEvent->button() == Qt::LeftButton)
+	{
+		TopologyItem *topologyItem = qgraphicsitem_cast<TopologyItem *>(itemAt(mouseEvent->scenePos(), QTransform()));
+		if (topologyItem)
+		{
+			itemClicked(topologyItem, topologyItem->getAttributes());
+		}
+	}
 }
 
 void TopologyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)

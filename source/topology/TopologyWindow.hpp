@@ -64,6 +64,7 @@ private slots:
 	void bringToFront();
 	void sendToBack();
 	void itemInserted(TopologyItem *item);
+	void itemClicked(TopologyItem *item, std::map<std::string, std::string> attributes);
 	void sceneScaleChanged(const QString &scale);
 
 private:
@@ -74,6 +75,8 @@ private:
 
 	TopologyScene *scene = nullptr;
 	QGraphicsView *view	 = nullptr;
+
+	QDockWidget *m_detailsDockWidget = nullptr;
 
 	QAction *saveTopologyAction = nullptr;
 	QAction *deleteAction		= nullptr;
