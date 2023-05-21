@@ -166,3 +166,16 @@ ResizeableRectItem::HandleAnchor ResizeableRectItem::getHandleAnchor(const QPoin
 
 	return HandleAnchor::None;
 }
+
+QVariant ResizeableRectItem::itemChange(GraphicsItemChange change, const QVariant &value)
+{
+	if (change == ItemPositionChange && scene())
+	{
+		QPointF newPos = value.toPointF();
+		newPos.setX(qMax(newPos.x(), 0.0));
+		newPos.setY(qMax(newPos.y(), 0.0));
+		return newPos;
+	}
+
+	return QGraphicsItem::itemChange(change, value);
+}
