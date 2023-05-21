@@ -28,6 +28,10 @@ set(PROJECT_SOURCES
 	source/TabWindow.hpp
 	source/LayoutManager.cpp
 	source/LayoutManager.hpp
+	source/configuration/ConfigurationWindow.cpp
+	source/configuration/ConfigurationWindow.hpp
+	source/configuration/ConfigurationManager.cpp
+	source/configuration/ConfigurationManager.hpp
 	source/topology/TopologyWindow.cpp
     source/topology/TopologyWindow.hpp
 	source/topology/Arrow.cpp

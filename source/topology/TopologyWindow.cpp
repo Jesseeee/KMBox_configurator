@@ -38,20 +38,6 @@ TopologyWindow::TopologyWindow(QWidget *parent)
 	createActions();
 	createToolBox();
 
-	// create the details widget - TODO - custom widget for values
-	// m_detailsWidget = new ItemDetailsWidget();
-	// create the dock widget
-	// m_detailsDockWidget = new QDockWidget(tr("Item Details"));
-	// set the dock widget properties
-	// m_detailsDockWidget->setAllowedAreas(Qt::RightDockWidgetArea);
-	// m_detailsDockWidget->setWidget(new QWidget(this));
-	// m_detailsDockWidget->setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable);
-	// m_detailsDockWidget->hide();
-	// m_detailsDockWidget->setMinimumWidth(150);
-	// m_detailsDockWidget->setMinimumHeight(centralWidget()->height());
-	// addDockWidget(Qt::RightDockWidgetArea, m_detailsDockWidget);
-	// m_detailsDockWidget->show();
-
 	scene = new TopologyScene(this);
 	QObject::connect(scene, &TopologyScene::itemClicked, this, &TopologyWindow::itemClicked);
 	scene->setSceneRect(QRectF(0, 0, 5000, 5000));
@@ -73,8 +59,6 @@ TopologyWindow::TopologyWindow(QWidget *parent)
 	view->setTransform(QTransform::fromScale(scaleFactor, scaleFactor));
 
 	layout->addWidget(view);
-
-	// layout->addWidget(m_detailsDockWidget);
 
 	auto *widget = new QWidget;
 	widget->setLayout(layout);

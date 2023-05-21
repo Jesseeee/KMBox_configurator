@@ -32,17 +32,20 @@
 #include "LayoutManager.hpp"
 #include "topology/TopologyWindow.hpp"
 #include "layout/LayoutWindow.hpp"
+#include "configuration/ConfigurationWindow.hpp"
 
 TabWindow::TabWindow(LayoutManager *layoutManager, QWidget *parent)
 	: QMainWindow(parent)
 {
 	tabWidget = new QTabWidget(this);
 
-	auto *topologyWindow = new TopologyWindow(this);
-	auto *layoutWindow	 = new LayoutWindow(this);
+	auto *topologyWindow	  = new TopologyWindow(this);
+	auto *layoutWindow		  = new LayoutWindow(this);
+	auto *configurationWindow = new ConfigurationWindow(this);
 
 	tabWidget->addTab(topologyWindow, tr("Topology"));
 	tabWidget->addTab(layoutWindow, tr("Layout"));
+	tabWidget->addTab(configurationWindow, tr("Configuration"));
 
 	layoutManager->setLayoutWindow(layoutWindow);
 	layoutManager->setTopologyWindow(topologyWindow);
