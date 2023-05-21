@@ -26,9 +26,28 @@
 
 #include "LayoutScene.hpp"
 
+#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsRectItem>
+#include <QGraphicsSceneDragDropEvent>
+#include <QWidget>
+
 LayoutScene::LayoutScene(QObject *parent)
 	: QGraphicsScene(parent)
 {
 }
 
 LayoutScene::~LayoutScene() {}
+
+void LayoutScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
+{
+	QGraphicsScene::mousePressEvent(mouseEvent);
+	if (mouseEvent->button() == Qt::LeftButton)
+	{
+		QGraphicsRectItem *rectItem
+			= qgraphicsitem_cast<QGraphicsRectItem *>(itemAt(mouseEvent->scenePos(), QTransform()));
+		if (rectItem)
+		{
+			rectClicked(rectItem);
+		}
+	}
+}

@@ -1,5 +1,5 @@
 /**
- * @file LayoutScene.hpp
+ * @file RectDetailWidget.hpp
  *
  * @brief TODO
  *
@@ -21,31 +21,48 @@
  * - <!--notes-->
  *
  * <H3>Author</H3>
- * - May 06, 2023 ; jesvan
+ * - May 20, 2023 ; jesvan
  */
-#ifndef LAYOUTSCENE_HPP_
-#define LAYOUTSCENE_HPP_
+#ifndef RECTDETAILWIDGET_HPP_
+#define RECTDETAILWIDGET_HPP_
 
-#include <QGraphicsScene>
+#include <QWidget>
 
-class LayoutScene : public QGraphicsScene
+class QGraphicsRectItem;
+class QLabel;
+class QSpinBox;
+
+class RectDetailWidget : public QWidget
 {
-	Q_OBJECT
 public:
-	explicit LayoutScene(QObject *parent = nullptr);
-	~LayoutScene() override;
+	RectDetailWidget();
+	virtual ~RectDetailWidget();
+
+	void setRectItem(QGraphicsRectItem *item);
 
 	// Disable copy and move semantics by default
-	LayoutScene(const LayoutScene &)			= delete;
-	LayoutScene(LayoutScene &&)					= delete;
-	LayoutScene &operator=(const LayoutScene &) = delete;
-	LayoutScene &operator=(LayoutScene &&)		= delete;
+	RectDetailWidget(const RectDetailWidget &)			  = delete;
+	RectDetailWidget(RectDetailWidget &&)				  = delete;
+	RectDetailWidget &operator=(const RectDetailWidget &) = delete;
+	RectDetailWidget &operator=(RectDetailWidget &&)	  = delete;
 
-signals:
-	void rectClicked(QGraphicsRectItem *rectItem);
+private slots:
+	void xposChanged(int xpos);
+	void yposChanged(int ypos);
+	void widthChanged(int width);
+	void heightChanged(int height);
 
-protected:
-	void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+private:
+	QGraphicsRectItem *currentRectItem = nullptr;
+
+	QLabel	 *xposLabel;
+	QSpinBox *xposSpinBox;
+	QLabel	 *yposlabel;
+	QSpinBox *yposSpinBox;
+	QLabel	 *widthLabel;
+	QSpinBox *widthSpinBox;
+	QLabel	 *heightLabel;
+	QSpinBox *heightSpinBox;
 };
 
 #endif

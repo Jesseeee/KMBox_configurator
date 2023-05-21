@@ -40,6 +40,8 @@ set(PROJECT_SOURCES
 	source/topology/TopologyScene.hpp
 	source/layout/LayoutWindow.cpp
 	source/layout/LayoutWindow.hpp
+	source/layout/RectDetailWidget.cpp
+	source/layout/RectDetailWidget.hpp
 	source/layout/LayoutScene.cpp
 	source/layout/LayoutScene.hpp
 	source/layout/ResizeableRectItem.cpp

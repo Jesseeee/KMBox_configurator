@@ -33,6 +33,9 @@
 class LayoutScene;
 class QGraphicsView;
 class QGraphicsItem;
+class QDockWidget;
+class RectDetailWidget;
+class QGraphicsRectItem;
 
 class LayoutWindow : public QMainWindow
 {
@@ -52,6 +55,9 @@ public:
 Q_SIGNALS:
 	void saveLayout();
 
+private slots:
+	void rectClicked(QGraphicsRectItem *rectItem);
+
 private:
 	LayoutScene	  *scene = nullptr;
 	QGraphicsView *view	 = nullptr;
@@ -59,6 +65,9 @@ private:
 	QAction *saveLayoutAction = nullptr;
 
 	QToolBar *editToolBar = nullptr;
+
+	QDockWidget		 *m_rectDetailsDockWidget = nullptr;
+	RectDetailWidget *m_rectDetailWidget	  = nullptr;
 };
 
 #endif

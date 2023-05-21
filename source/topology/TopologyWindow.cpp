@@ -41,16 +41,16 @@ TopologyWindow::TopologyWindow(QWidget *parent)
 	// create the details widget - TODO - custom widget for values
 	// m_detailsWidget = new ItemDetailsWidget();
 	// create the dock widget
-	m_detailsDockWidget = new QDockWidget(tr("Item Details"));
+	// m_detailsDockWidget = new QDockWidget(tr("Item Details"));
 	// set the dock widget properties
-	m_detailsDockWidget->setAllowedAreas(Qt::RightDockWidgetArea);
-	m_detailsDockWidget->setWidget(new QWidget(this));
-	m_detailsDockWidget->setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable);
-	m_detailsDockWidget->hide();
-	m_detailsDockWidget->setMinimumWidth(150);
+	// m_detailsDockWidget->setAllowedAreas(Qt::RightDockWidgetArea);
+	// m_detailsDockWidget->setWidget(new QWidget(this));
+	// m_detailsDockWidget->setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable);
+	// m_detailsDockWidget->hide();
+	// m_detailsDockWidget->setMinimumWidth(150);
 	// m_detailsDockWidget->setMinimumHeight(centralWidget()->height());
-	addDockWidget(Qt::RightDockWidgetArea, m_detailsDockWidget);
-	m_detailsDockWidget->show();
+	// addDockWidget(Qt::RightDockWidgetArea, m_detailsDockWidget);
+	// m_detailsDockWidget->show();
 
 	scene = new TopologyScene(this);
 	QObject::connect(scene, &TopologyScene::itemClicked, this, &TopologyWindow::itemClicked);
@@ -61,9 +61,20 @@ TopologyWindow::TopologyWindow(QWidget *parent)
 	auto *layout = new QHBoxLayout;
 	layout->addWidget(toolBox);
 	view = new QGraphicsView(scene);
+
+	// Get the screen's logical DPI
+	qreal dpi = QGuiApplication::primaryScreen()->logicalDotsPerInch();
+
+	// Calculate the scale factor based on a reference DPI
+	qreal referenceDpi = 96.0; // Adjust this to your desired reference DPI
+	qreal scaleFactor  = dpi / referenceDpi;
+
+	// Apply the scale factor to the view transformation
+	view->setTransform(QTransform::fromScale(scaleFactor, scaleFactor));
+
 	layout->addWidget(view);
 
-	layout->addWidget(m_detailsDockWidget);
+	// layout->addWidget(m_detailsDockWidget);
 
 	auto *widget = new QWidget;
 	widget->setLayout(layout);
