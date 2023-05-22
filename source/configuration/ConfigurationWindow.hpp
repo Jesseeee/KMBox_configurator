@@ -30,6 +30,12 @@
 
 #include "ConfigurationManager.hpp"
 
+#include "network/KMAPIHandler.hpp"
+
+class QLabel;
+class QTextEdit;
+class QLineEdit;
+
 class ConfigurationWindow : public QWidget
 {
 	Q_OBJECT
@@ -43,8 +49,15 @@ public:
 	ConfigurationWindow &operator=(const ConfigurationWindow &) = delete;
 	ConfigurationWindow &operator=(ConfigurationWindow &&)		= delete;
 
-private slots:
-	void uploadConfiguration();
+private:
+	KMAPIHandler m_KMAPIHandler;
+	QTextEdit	*m_xmlTextEdit	 = nullptr;
+	QLabel		*m_ipLabel		 = nullptr;
+	QLineEdit	*m_ipTextField	 = nullptr;
+	QLabel		*m_userNameLabel = nullptr;
+	QLineEdit	*m_userNameField = nullptr;
+	QLabel		*m_passwordLabel = nullptr;
+	QLineEdit	*m_passwordField = nullptr;
 };
 
 #endif

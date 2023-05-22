@@ -44,8 +44,6 @@ KMAPIHandler::KMAPIHandler()
 	m_sslConfig.setSslOption(QSsl::SslOptionDisableSessionTickets, true);
 }
 
-KMAPIHandler::~KMAPIHandler() {}
-
 void KMAPIHandler::setUsername(const QString &username)
 {
 	m_username = username;

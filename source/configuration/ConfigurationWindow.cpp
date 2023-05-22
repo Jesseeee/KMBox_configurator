@@ -29,6 +29,8 @@
 #include <QVBoxLayout>
 #include <QTextEdit>
 #include <QPushButton>
+#include <QLabel>
+#include <QLineEdit>
 
 ConfigurationWindow::ConfigurationWindow(QWidget *parent)
 	: QWidget(parent)
@@ -38,13 +40,38 @@ ConfigurationWindow::ConfigurationWindow(QWidget *parent)
 	QVBoxLayout *buttonFieldsLayout = new QVBoxLayout();
 
 	// Create a QTextEdit in the first tab
-	QTextEdit *textEdit = new QTextEdit(this);
-	textEdit->setMaximumWidth(1000);
-	textEditLayout->addWidget(textEdit);
+	m_xmlTextEdit = new QTextEdit(this);
+	m_xmlTextEdit->setMaximumWidth(1000);
+	textEditLayout->addWidget(m_xmlTextEdit);
+
+	m_ipLabel = new QLabel(tr("IP address"), this);
+	buttonFieldsLayout->addWidget(m_ipLabel);
+	m_ipTextField = new QLineEdit(this);
+	QObject::connect(m_ipTextField,
+					 &QLineEdit::textChanged,
+					 [this](const QString &ip) { m_KMAPIHandler.setKMAddress(ip); });
+	buttonFieldsLayout->addWidget(m_ipTextField);
+	m_userNameLabel = new QLabel(tr("Username"), this);
+	buttonFieldsLayout->addWidget(m_userNameLabel);
+	m_userNameField = new QLineEdit(this);
+	QObject::connect(m_userNameField,
+					 &QLineEdit::textChanged,
+					 [this](const QString &username) { m_KMAPIHandler.setUsername(username); });
+	buttonFieldsLayout->addWidget(m_userNameField);
+	m_passwordLabel = new QLabel(tr("Password"), this);
+	buttonFieldsLayout->addWidget(m_passwordLabel);
+	m_passwordField = new QLineEdit(this);
+	m_passwordField->setEchoMode(QLineEdit::EchoMode::Password);
+	QObject::connect(m_passwordField,
+					 &QLineEdit::textChanged,
+					 [this](const QString &password) { m_KMAPIHandler.setPassword(password); });
+	buttonFieldsLayout->addWidget(m_passwordField);
 
 	// Create a QPushButton in the first tab
 	QPushButton *uploadButton = new QPushButton(tr("Upload configuration"), this);
-	QObject::connect(uploadButton, &QPushButton::pressed, this, &ConfigurationWindow::uploadConfiguration);
+	QObject::connect(uploadButton,
+					 &QPushButton::pressed,
+					 [this]() { m_KMAPIHandler.sendConfiguration(m_xmlTextEdit->toPlainText()); });
 	uploadButton->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 	buttonFieldsLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 	buttonFieldsLayout->addWidget(uploadButton);
@@ -55,8 +82,3 @@ ConfigurationWindow::ConfigurationWindow(QWidget *parent)
 }
 
 ConfigurationWindow::~ConfigurationWindow() {}
-
-void ConfigurationWindow::uploadConfiguration()
-{
-	// TODO - get the text from the textedit and try to upload it, validate it first
-}

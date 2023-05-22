@@ -66,6 +66,8 @@ target_link_libraries(KMBox_configurator PRIVATE
     Qt6::Widgets
 )
 
+target_include_directories(KMBox_configurator PRIVATE ./source/)
+
 target_include_directories(KMBox_configurator PRIVATE
 	"C:\\Qt\\Tools\\mingw1120_64\\lib\\gcc\\x86_64-w64-mingw32\\11.2.0\\include\\c++\\bits"
 )

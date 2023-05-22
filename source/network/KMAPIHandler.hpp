@@ -36,7 +36,7 @@ class KMAPIHandler : public QObject
 	Q_OBJECT
 public:
 	KMAPIHandler();
-	virtual ~KMAPIHandler();
+	~KMAPIHandler() override = default;
 
 	// Disable copy and move semantics by default
 	KMAPIHandler(const KMAPIHandler &)			  = delete;
@@ -48,6 +48,7 @@ public:
 	void setPassword(const QString &password);
 
 	void setKMAddress(const QHostAddress &address) { m_address = address; }
+	void setKMAddress(const QString &address) { m_address = QHostAddress(address); }
 
 	void sendConfiguration(const QString &configurationXml);
 
