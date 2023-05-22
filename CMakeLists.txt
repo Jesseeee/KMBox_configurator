@@ -20,7 +20,7 @@ if(CMAKE_EXPORT_COMPILE_COMMANDS)
     set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
 endif()
 
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Core Network Gui Widgets)
 
 set(PROJECT_SOURCES
     source/main.cpp
@@ -50,6 +50,8 @@ set(PROJECT_SOURCES
 	source/layout/LayoutScene.hpp
 	source/layout/ResizeableRectItem.cpp
 	source/layout/ResizeableRectItem.hpp
+	source/network/KMAPIHandler.cpp
+	source/network/KMAPIHandler.hpp
 )
 
 qt_add_executable(KMBox_configurator
@@ -59,6 +61,7 @@ qt_add_executable(KMBox_configurator
 
 target_link_libraries(KMBox_configurator PRIVATE
     Qt6::Core
+	Qt6::Network
 	Qt6::Gui
     Qt6::Widgets
 )
