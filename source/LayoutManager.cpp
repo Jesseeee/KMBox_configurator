@@ -27,6 +27,7 @@
 #include "LayoutManager.hpp"
 
 #include "layout/ResizeableRectItem.hpp"
+#include "configuration/ConfigurationManager.hpp"
 
 void LayoutManager::setTopologyWindow(TopologyWindow *pTopologyWindow)
 {
@@ -51,16 +52,25 @@ void LayoutManager::topologySaved()
 void LayoutManager::layoutSaved()
 {
 	// TODO - on layout save execute configuration creation
-	std::vector<QGraphicsItem *>	  itemList = m_pLayoutWindow->getAllItems();
-	std::vector<ResizeableRectItem *> rectItemList;
+	ConfigurationManager::KMLayout kmLayout;
+	kmLayout.layoutName = "001";
 
-	for (QGraphicsItem *item : itemList)
+	for (QGraphicsItem *item : m_pLayoutWindow->getAllItems())
 	{
-		ResizeableRectItem *rectItem = dynamic_cast<ResizeableRectItem *>(item);
+		const ResizeableRectItem *rectItem = dynamic_cast<ResizeableRectItem *>(item);
 		if (rectItem != nullptr)
 		{
-			rectItemList.push_back(rectItem);
+			ConfigurationManager::LayoutScreen layoutScreen;
+			layoutScreen.screenName = rectItem->getScreenName();
+			layoutScreen.zValue		= rectItem->zValue();
+			QRectF rect(rectItem->pos().x(), rectItem->pos().x(), rectItem->rect().width(), rectItem->rect().height());
+
+			layoutScreen.layoutRect = rect;
+			kmLayout.layoutScreens.push_back(layoutScreen);
 		}
 	}
-	qDebug() << "rect items " << rectItemList.size();
+
+	std::vector<ConfigurationManager::KMLayout> layouts;
+	layouts.push_back(kmLayout);
+	ConfigurationManager::instance().setLayouts(layouts);
 }

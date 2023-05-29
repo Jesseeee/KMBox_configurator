@@ -47,6 +47,7 @@ ConfigurationWindow::ConfigurationWindow(QWidget *parent)
 	m_ipLabel = new QLabel(tr("IP address"), this);
 	buttonFieldsLayout->addWidget(m_ipLabel);
 	m_ipTextField = new QLineEdit(this);
+	m_ipTextField->setMaximumWidth(200);
 	QObject::connect(m_ipTextField,
 					 &QLineEdit::textChanged,
 					 [this](const QString &ip) { m_KMAPIHandler.setKMAddress(ip); });
@@ -54,6 +55,7 @@ ConfigurationWindow::ConfigurationWindow(QWidget *parent)
 	m_userNameLabel = new QLabel(tr("Username"), this);
 	buttonFieldsLayout->addWidget(m_userNameLabel);
 	m_userNameField = new QLineEdit(this);
+	m_userNameField->setMaximumWidth(200);
 	QObject::connect(m_userNameField,
 					 &QLineEdit::textChanged,
 					 [this](const QString &username) { m_KMAPIHandler.setUsername(username); });
@@ -61,6 +63,7 @@ ConfigurationWindow::ConfigurationWindow(QWidget *parent)
 	m_passwordLabel = new QLabel(tr("Password"), this);
 	buttonFieldsLayout->addWidget(m_passwordLabel);
 	m_passwordField = new QLineEdit(this);
+	m_passwordField->setMaximumWidth(200);
 	m_passwordField->setEchoMode(QLineEdit::EchoMode::Password);
 	QObject::connect(m_passwordField,
 					 &QLineEdit::textChanged,
@@ -79,6 +82,16 @@ ConfigurationWindow::ConfigurationWindow(QWidget *parent)
 	mainLayout->addLayout(textEditLayout);
 	mainLayout->addLayout(buttonFieldsLayout);
 	setLayout(mainLayout);
+
+	QObject::connect(&ConfigurationManager::instance(),
+					 ConfigurationManager::configurationChanged,
+					 this,
+					 ConfigurationWindow::configurationChanged);
 }
 
 ConfigurationWindow::~ConfigurationWindow() {}
+
+void ConfigurationWindow::configurationChanged(const QString &configuration)
+{
+	m_xmlTextEdit->setText(configuration);
+}

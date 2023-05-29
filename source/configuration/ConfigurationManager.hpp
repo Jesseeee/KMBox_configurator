@@ -30,11 +30,13 @@
 #include <string>
 #include <vector>
 
+#include <QObject>
 #include <QRectF>
 #include <QString>
 
-class ConfigurationManager
+class ConfigurationManager : public QObject
 {
+	Q_OBJECT
 public:
 	virtual ~ConfigurationManager();
 
@@ -50,6 +52,7 @@ public:
 		std::string screenName;
 		QRectF		layoutRect;
 		qreal		zValue;
+		QString		kmName;
 	};
 
 	/// @brief A single layout with a layout name and the screens inside it
@@ -69,13 +72,23 @@ public:
 	ConfigurationManager &operator=(const ConfigurationManager &) = delete;
 	ConfigurationManager &operator=(ConfigurationManager &&)	  = delete;
 
+signals:
+	void configurationChanged(const QString &configuration);
+
 private:
+	inline static std::map<std::string, std::string> testScreens
+		= {{"screen1", "server1"}, {"screen2", "server2"}, {"screen3", "server3"}};
+	inline static std::map<std::string, std::string> testServers
+		= {{"server1", "usb1"}, {"server2", "usb2"}, {"server3", "usb3"}};
 	// TODO - remove function call, only for testing now
-	ConfigurationManager() { createConfiguration(); }
+	ConfigurationManager()
+	{
+		setServers(testServers);
+		setScreens(testScreens);
+	}
 
 	void createConfiguration();
 
-private:
 	/// @brief The servers are a map of server name and usb-name
 	std::map<std::string, std::string> m_servers;
 	///	@brief The screens are a map of screen names and server names

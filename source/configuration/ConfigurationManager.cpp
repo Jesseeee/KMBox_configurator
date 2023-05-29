@@ -58,11 +58,57 @@ void ConfigurationManager::setLayouts(const std::vector<KMLayout> &layouts)
 void ConfigurationManager::createConfiguration()
 {
 	m_configuration = "";
+
+	int amountOfScreens = 0;
+
+	QStringList		 screenElements;
 	QXmlStreamWriter writer(&m_configuration);
 	writer.setAutoFormatting(true);
 
 	writer.writeDefaultNamespace("http://www.esterline.com/device/configuration"); // Add default namespace
-	writer.writeStartElement("configuration");
-	writer.writeEndElement(); // configuration root end
-	qDebug() << m_configuration;
+	writer.writeStartElement("configuration"); // Start configuration root element
+
+	for (KMLayout &layout : m_layouts)
+	{
+		for (LayoutScreen &screen : layout.layoutScreens)
+		{
+			QString usb		   = QString::fromStdString(m_servers[m_screens[screen.screenName]]);
+			QString screenName = usb + ":screen" + QString::number(amountOfScreens);
+			amountOfScreens++;
+			QString worldLocation;
+			worldLocation += QString::number(screen.layoutRect.x()) + " ";
+			worldLocation += QString::number(screen.layoutRect.y()) + " ";
+			worldLocation += QString::number(screen.layoutRect.width()) + " ";
+			worldLocation += QString::number(screen.layoutRect.height());
+			writer.writeStartElement("screen");
+			writer.writeAttribute("name", screenName);
+			writer.writeAttribute("worldlocation", worldLocation);
+			writer.writeEndElement(); // close screen elements
+			screen.kmName = screenName;
+		}
+	}
+
+	writer.writeStartElement("layouts");
+
+	for (const KMLayout &layout : m_layouts)
+	{
+		writer.writeStartElement("layout");
+		writer.writeAttribute("name", layout.layoutName);
+		for (const LayoutScreen &screen : layout.layoutScreens)
+		{
+			writer.writeStartElement("screen");
+			writer.writeAttribute("name", screen.kmName);
+			writer.writeAttribute("absolute", "true");
+			writer.writeEndElement(); // close screen element
+		}
+		writer.writeEndElement(); // close layout element
+	}
+
+	writer.writeEndElement(); // close layouts element
+
+	writer.writeEndElement(); // Close the configuration root element
+
+	writer.writeEndDocument();
+
+	configurationChanged(m_configuration);
 }

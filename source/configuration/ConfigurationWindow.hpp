@@ -49,6 +49,9 @@ public:
 	ConfigurationWindow &operator=(const ConfigurationWindow &) = delete;
 	ConfigurationWindow &operator=(ConfigurationWindow &&)		= delete;
 
+private slots:
+	void configurationChanged(const QString &configuration);
+
 private:
 	KMAPIHandler m_KMAPIHandler;
 	QTextEdit	*m_xmlTextEdit	 = nullptr;

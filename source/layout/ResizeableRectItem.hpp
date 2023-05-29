@@ -37,6 +37,9 @@ public:
 	explicit ResizeableRectItem(QGraphicsItem *parent = nullptr);
 	~ResizeableRectItem() override = default;
 
+	void		setScreenName(std::string_view name) { m_screenName = name; }
+	std::string getScreenName() const { return m_screenName; }
+
 	enum class HandleAnchor
 	{
 		Left,
@@ -63,10 +66,12 @@ protected:
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
-	QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
+	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
 private:
 	[[nodiscard]] HandleAnchor getHandleAnchor(const QPointF &point) const;
 
 	HandleAnchor m_anchor = HandleAnchor::None;
+
+	std::string m_screenName;
 };
