@@ -76,16 +76,8 @@ signals:
 	void configurationChanged(const QString &configuration);
 
 private:
-	inline static std::map<std::string, std::string> testScreens
-		= {{"screen1", "server1"}, {"screen2", "server2"}, {"screen3", "server3"}};
-	inline static std::map<std::string, std::string> testServers
-		= {{"server1", "usb1"}, {"server2", "usb2"}, {"server3", "usb3"}};
 	// TODO - remove function call, only for testing now
-	ConfigurationManager()
-	{
-		setServers(testServers);
-		setScreens(testScreens);
-	}
+	ConfigurationManager() {}
 
 	void createConfiguration();
 

@@ -28,11 +28,13 @@
 
 #include "layout/ResizeableRectItem.hpp"
 #include "configuration/ConfigurationManager.hpp"
+#include "topology/Arrow.hpp"
+#include "topology/TopologyItem.hpp"
 
 void LayoutManager::setTopologyWindow(TopologyWindow *pTopologyWindow)
 {
 	m_pTopologyWindow = pTopologyWindow;
-	QObject::connect(m_pTopologyWindow, &TopologyWindow::saveTopology, this, &LayoutManager::topologySaved);
+	QObject::connect(m_pTopologyWindow, &TopologyWindow::saveTopology, [this]() { topologySaved(); });
 }
 void LayoutManager::setLayoutWindow(LayoutWindow *pLayoutWindow)
 {
@@ -44,7 +46,86 @@ void LayoutManager::topologySaved()
 {
 	std::vector<TopologyItem *> items  = m_pTopologyWindow->getAllTopologyItems();
 	std::vector<Arrow *>		arrows = m_pTopologyWindow->getAllArrows();
-	qDebug() << "Arrows size is " << arrows.size();
+
+	std::map<std::string, std::string> servers;
+	std::map<std::string, std::string> screens;
+
+	for (const Arrow *arrow : arrows)
+	{
+		TopologyItem *startItem = arrow->startItem();
+		TopologyItem *endItem	= arrow->endItem();
+		std::string	  startAnchorName;
+		std::string	  endAnchorName;
+		for (const TopologyItem::anchorPoint &anchorPoint : startItem->getAnchors())
+		{
+			if (anchorPoint.m_anchor == arrow->startAnchor())
+			{
+				startAnchorName = anchorPoint.m_name;
+			}
+		}
+		for (const TopologyItem::anchorPoint &anchorPoint : endItem->getAnchors())
+		{
+			if (anchorPoint.m_anchor == arrow->endAnchor())
+			{
+				endAnchorName = anchorPoint.m_name;
+			}
+		}
+
+		if (startItem->diagramType() == TopologyItem::TopologyType::KMBox)
+		{
+			if (endItem->diagramType() == TopologyItem::TopologyType::Server)
+			{
+				if (endAnchorName == "USB-B")
+				{
+					// Valid connection, so let's fill it up
+					servers.try_emplace(endItem->getAttributes()["server name"], startAnchorName);
+				}
+			}
+		}
+		else if (startItem->diagramType() == TopologyItem::TopologyType::Server)
+		{
+			if (endItem->diagramType() == TopologyItem::TopologyType::KMBox)
+			{
+				if (startAnchorName == "USB-B")
+				{
+					// Valid connection, so let's fill it up
+					servers.try_emplace(startItem->getAttributes()["server name"], endAnchorName);
+				}
+			}
+			if (endItem->diagramType() == TopologyItem::TopologyType::Display)
+			{
+				if (startAnchorName == "VideoOut")
+				{
+					// Valid connection, so let's fill it up
+					screens.try_emplace(endItem->getAttributes()["display name"],
+										startItem->getAttributes()["server name"]);
+				}
+			}
+		}
+		else if (startItem->diagramType() == TopologyItem::TopologyType::Display)
+		{
+			if (endItem->diagramType() == TopologyItem::TopologyType::Server)
+			{
+				if (endAnchorName == "VideoOut")
+				{
+					screens.try_emplace(startItem->getAttributes()["display name"],
+										endItem->getAttributes()["server name"]);
+				}
+			}
+		}
+	}
+
+	ConfigurationManager::instance().setServers(servers);
+	ConfigurationManager::instance().setScreens(screens);
+
+	m_pLayoutWindow->clearScreens();
+
+	int screenCount = 0;
+	for (const auto [screen, server] : screens)
+	{
+		m_pLayoutWindow->addScreen(100 * screenCount, 0, 100, 100, screen);
+		screenCount++;
+	}
 
 	// TODO - Parse this as a sort of logical tree and set the allowed screens in the layoutwindow
 }
@@ -63,7 +144,10 @@ void LayoutManager::layoutSaved()
 			ConfigurationManager::LayoutScreen layoutScreen;
 			layoutScreen.screenName = rectItem->getScreenName();
 			layoutScreen.zValue		= rectItem->zValue();
-			QRectF rect(rectItem->pos().x(), rectItem->pos().x(), rectItem->rect().width(), rectItem->rect().height());
+			QRectF rect(qRound(rectItem->pos().x()),
+						qRound(rectItem->pos().y()),
+						qRound(rectItem->rect().width()),
+						qRound(rectItem->rect().height()));
 
 			layoutScreen.layoutRect = rect;
 			kmLayout.layoutScreens.push_back(layoutScreen);

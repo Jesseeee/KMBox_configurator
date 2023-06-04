@@ -46,6 +46,9 @@ public:
 
 	std::vector<QGraphicsItem *> getAllItems() const;
 
+	void clearScreens();
+	void addScreen(qreal xpos, qreal ypos, qreal width, qreal height, std::string name);
+
 	// Disable copy and move semantics by default
 	LayoutWindow(const LayoutWindow &)			  = delete;
 	LayoutWindow(LayoutWindow &&)				  = delete;

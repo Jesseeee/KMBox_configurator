@@ -44,11 +44,12 @@ public:
 		  QGraphicsEllipseItem *endAnchor,
 		  QGraphicsItem		   *parent = nullptr);
 
-	[[nodiscard]] int			type() const override { return Type; }
-	[[nodiscard]] TopologyItem *startItem() const { return m_startItem; }
-	[[nodiscard]] TopologyItem *endItem() const { return m_endItem; }
-
-	void updatePosition();
+	[[nodiscard]] int					type() const override { return Type; }
+	[[nodiscard]] TopologyItem		   *startItem() const { return m_startItem; }
+	[[nodiscard]] TopologyItem		   *endItem() const { return m_endItem; }
+	[[nodsicard]] QGraphicsEllipseItem *startAnchor() const { return m_startAnchor; }
+	[[nodsicard]] QGraphicsEllipseItem *endAnchor() const { return m_endAnchor; }
+	void								updatePosition();
 
 private:
 	TopologyItem		 *m_startItem;

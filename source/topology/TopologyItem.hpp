@@ -55,7 +55,7 @@ public:
 	struct anchorPoint
 	{
 		anchorPoint(std::string name, QGraphicsEllipseItem *anchor)
-			: m_name(name)
+			: m_name(std::move(name))
 			, m_anchor(anchor)
 		{
 		}
@@ -73,7 +73,9 @@ public:
 
 	std::map<std::string, std::string> getAttributes() const { return m_attributes; }
 
-	void setAttributeValue(const std::string &key, const std::string &value) { m_attributes[key] = value; }
+	const std::vector<anchorPoint> &getAnchors() { return m_anchors; }
+
+	void setAttributeValue(const std::string &key, std::string_view value) { m_attributes[key] = value; }
 
 protected:
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;

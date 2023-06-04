@@ -85,8 +85,8 @@ TopologyItem::TopologyItem(TopologyType diagramType, QGraphicsItem *parent)
 		const QPointF topMiddleAnchor(m_myPixMap.width() / 2 - ANCHOR_SIZE, 0);
 		const QPointF topBottomAnchor(m_myPixMap.width() / 2 - ANCHOR_SIZE, m_myPixMap.height() - ANCHOR_SIZE);
 
-		m_anchors.emplace_back("VideoOut", createAnchor(topMiddleAnchor));
-		m_anchors.emplace_back("USB-B", createAnchor(topBottomAnchor));
+		m_anchors.emplace_back("USB-B", createAnchor(topMiddleAnchor));
+		m_anchors.emplace_back("VideoOut", createAnchor(topBottomAnchor));
 		m_attributes.try_emplace("server name", "");
 	}
 	else
