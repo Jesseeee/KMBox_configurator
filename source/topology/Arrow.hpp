@@ -47,8 +47,8 @@ public:
 	[[nodiscard]] int					type() const override { return Type; }
 	[[nodiscard]] TopologyItem		   *startItem() const { return m_startItem; }
 	[[nodiscard]] TopologyItem		   *endItem() const { return m_endItem; }
-	[[nodsicard]] QGraphicsEllipseItem *startAnchor() const { return m_startAnchor; }
-	[[nodsicard]] QGraphicsEllipseItem *endAnchor() const { return m_endAnchor; }
+	[[nodiscard]] QGraphicsEllipseItem *startAnchor() const { return m_startAnchor; }
+	[[nodiscard]] QGraphicsEllipseItem *endAnchor() const { return m_endAnchor; }
 	void								updatePosition();
 
 private:
